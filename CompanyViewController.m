@@ -36,9 +36,9 @@
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     
-    self.companyList = @[@"Apple mobile devices",@"Samsung mobile devices"];
-    self.title = @"Mobile device makers";
+    self.companyList = @[@"Apple mobile devices",@"Samsung mobile devices",@"LG Electronics", @"Pantech"];
     
+    self.title = @"Mobile device makers";
     
 }
 
@@ -75,6 +75,19 @@
     // Configure the cell...
     
     cell.textLabel.text = [self.companyList objectAtIndex:[indexPath row]];
+    if ([cell.textLabel.text isEqualToString: @"Apple mobile devices"]) {
+        cell.imageView.image = [UIImage imageNamed:@"AppleIcon.png"];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"Samsung mobile devices"]){
+        cell.imageView.image = [UIImage imageNamed:@"SamsungIcon.png"];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"LG Electronics"]){
+        cell.imageView.image = [UIImage imageNamed:@"LGIcon.png"];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"Pantech"]){
+        cell.imageView.image = [UIImage imageNamed:@"pantechicon.png"];
+    }
+    
     
     return cell;
 }
@@ -125,13 +138,18 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-
     if (indexPath.row == 0){
         self.productViewController.title = @"Apple mobile devices";
-    } else {
+    }
+    else if(indexPath.row == 1){
         self.productViewController.title = @"Samsung mobile devices";
     }
-    
+    else if (indexPath.row == 2){
+        self.productViewController.title = @"LG Electronics";
+    }
+    else if (indexPath.row == 3){
+        self.productViewController.title = @"Pantech";
+    }
     [self.navigationController
         pushViewController:self.productViewController
         animated:YES];

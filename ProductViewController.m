@@ -40,8 +40,15 @@
     
     if ([self.title isEqualToString:@"Apple mobile devices"]) {
         self.products = @[@"iPad", @"iPod Touch",@"iPhone"];
-    } else {
+    }
+    else if ([self.title isEqualToString:@"Samsung mobile devices"]){
         self.products = @[@"Galaxy S4", @"Galaxy Note", @"Galaxy Tab"];
+    }
+    else if ([self.title isEqualToString:@"LG Electronics"]){
+        self.products = @[@"G4",@"G Watch", @"G Flex"];
+    }
+    else {
+        self.products = @[@"Breakout", @"Hotshot", @"Ease"];
     }
     [self.tableView reloadData];
 }
@@ -77,7 +84,44 @@
     }
     // Configure the cell...
     cell.textLabel.text = [self.products objectAtIndex:[indexPath row]];
+    if ([cell.textLabel.text isEqualToString:@"iPad"]) {
+        cell.imageView.image = [UIImage imageNamed:@"iPadLogo.jpeg"];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"iPod Touch"]){
+        cell.imageView.image = [UIImage imageNamed:@"iPodTouchLogo.jpeg"];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"iPhone"]){
+        cell.imageView.image = [UIImage imageNamed:@"iPhoneLogo.png"];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"Galaxy S4"]){
+        cell.imageView.image = [UIImage imageNamed:@"GalaxyS4logo.jpeg"];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"Galaxy Note"]){
+        cell.imageView.image = [UIImage imageNamed:@"GalaxyNoteLogo.jpeg"];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"Galaxy Tab"]){
+        cell.imageView.image = [UIImage imageNamed:@"GalaxyNoteLogo.jpeg"];
+    }
+    else if([cell.textLabel.text isEqualToString:@"G4"]){
+        cell.imageView.image = [UIImage imageNamed:@"G4Logo.jpeg"];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"G Watch"]){
+        cell.imageView.image = [UIImage imageNamed:@"GWatchLogo.jpeg"];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"G Flex"]){
+        cell.imageView.image = [UIImage imageNamed:@"GFlexLogo.jpeg"];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"Breakout"]){
+        cell.imageView.image = [UIImage imageNamed:@"BreakoutLogo.jpeg"];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"Ease"]){
+        cell.imageView.image = [UIImage imageNamed:@"EaseLogo.jpeg"];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"Hotshot"]){
+        cell.imageView.image = [UIImage imageNamed:@"HotshotLogo.jpeg"];
+    }
     return cell;
+    
 }
 
 /*

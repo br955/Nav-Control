@@ -32,6 +32,11 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    self.apple = [NSMutableArray arrayWithObjects:@"iPad", @"iPod Touch",@"iPhone", nil];
+    self.samsung= [NSMutableArray arrayWithObjects:@"Galaxy S4", @"Galaxy Note", @"Galaxy Tab", nil];
+    self.lg = [NSMutableArray arrayWithObjects:@"G4",@"G Watch", @"G Flex", nil];
+    self.pantech = [NSMutableArray arrayWithObjects:@"Breakout", @"Hotshot", @"Ease", nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -39,16 +44,16 @@
     [super viewWillAppear:animated];
     
     if ([self.title isEqualToString:@"Apple mobile devices"]) {
-        self.products = @[@"iPad", @"iPod Touch",@"iPhone"];
+        self.products = self.apple;
     }
     else if ([self.title isEqualToString:@"Samsung mobile devices"]){
-        self.products = @[@"Galaxy S4", @"Galaxy Note", @"Galaxy Tab"];
+        self.products = self.samsung;
     }
     else if ([self.title isEqualToString:@"LG Electronics"]){
-        self.products = @[@"G4",@"G Watch", @"G Flex"];
+        self.products = self.lg;
     }
     else {
-        self.products = @[@"Breakout", @"Hotshot", @"Ease"];
+        self.products = self.pantech;
     }
     [self.tableView reloadData];
 }
@@ -124,35 +129,40 @@
     
 }
 
-/*
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
 
-/*
+
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        [self.products removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView reloadData];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
 
-/*
+
+
 // Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath{
+    NSString *stringToMove = [self.products objectAtIndex:fromIndexPath.row];
+    [self.products removeObjectAtIndex:fromIndexPath.row];
+    [self.products insertObject:stringToMove atIndex:toIndexPath.row];
+
 }
-*/
+
 
 /*
 // Override to support conditional rearranging of the table view.
@@ -163,22 +173,79 @@
 }
 */
 
-/*
 #pragma mark - Table view delegate
 
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here, for example:
+
     // Create the next view controller.
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+    //if (self.page == nil) {
+        ProductWebViewViewController *temp = [[ProductWebViewViewController alloc] initWithNibName:@"ProductWebViewViewController" bundle:[NSBundle mainBundle]];
+        self.page = temp;
+        [temp release];
+    //}
+    if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"iPad"]) {
+        self.page.URLName = @"http://www.apple.com/ipad/";
+    }
+    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"iPhone"]) {
+        self.page.URLName = @"http://www.apple.com/iphone/";
+    }
+    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"iPod Touch"]) {
+        self.page.URLName = @"http://www.apple.com/ipod-touch/";
+    }
+    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"Galaxy S4"]) {
+        self.page.URLName = @"http://www.samsung.com/global/microsite/galaxys4/";
+    }
+    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"Galaxy Note"]) {
+        self.page.URLName = @"http://www.samsung.com/global/microsite/galaxynote/note/index.html?type=find";
+    }
+    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"Galaxy Tab"]) {
+        self.page.URLName = @"http://www.samsung.com/global/microsite/galaxytab/10.1/index.html";
+    }
+    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"G4"]) {
+        self.page.URLName = @"http://www.lg.com/us/mobile-phones/g4";
+    }
+    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"G Watch"]) {
+        self.page.URLName = @"http://www.lg.com/global/gwatch/index.html#main";
+    }
+    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"G Flex"]) {
+        self.page.URLName = @"http://www.lg.com/us/lg-g-flex-phones";
+    }
+    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"Breakout"]) {
+        self.page.URLName = @"http://www.pantechusa.com/phones/breakout";
+    }
+    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"Ease"]) {
+        self.page.URLName = @"http://www.gsmarena.com/pantech_ease-3405.php";
+    }
+    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"Hotshot"]) {
+        self.page.URLName = @"http://www.gsmarena.com/pantech_breakout-4294.php";
+    }
+   
+    
+    [self.navigationController pushViewController: self.page animated:YES];
 
     // Pass the selected object to the new view controller.
-    
+
     // Push the view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
+
 }
- 
- */
+
+- (void)dealloc {
+    [self.page release];
+    [super dealloc];
+}
 
 @end
+
+
+
+
+
+
+
+
+
+
+

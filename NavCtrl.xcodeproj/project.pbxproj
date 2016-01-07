@@ -39,7 +39,9 @@
 		AA33FB681C249D75007B4342 /* iPadLogo.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AA33FB671C249D75007B4342 /* iPadLogo.jpeg */; };
 		AA33FB6A1C249D78007B4342 /* iPhoneLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = AA33FB691C249D78007B4342 /* iPhoneLogo.png */; };
 		AA33FB6C1C249D7C007B4342 /* iPodTouchLogo.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AA33FB6B1C249D7C007B4342 /* iPodTouchLogo.jpeg */; };
-		AA33FB6F1C24A945007B4342 /* ProductWebPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA33FB6E1C24A945007B4342 /* ProductWebPageViewController.m */; };
+		AA33FB7C1C3D8891007B4342 /* ProductWebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA33FB7A1C3D8891007B4342 /* ProductWebViewViewController.m */; };
+		AA33FB7E1C3D8DE0007B4342 /* ProductWebViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA33FB801C3D8DE0007B4342 /* ProductWebViewViewController.xib */; };
+		AA33FB841C3DCE7C007B4342 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA33FB831C3DCE7C007B4342 /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,8 +93,10 @@
 		AA33FB671C249D75007B4342 /* iPadLogo.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iPadLogo.jpeg; sourceTree = "<group>"; };
 		AA33FB691C249D78007B4342 /* iPhoneLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhoneLogo.png; sourceTree = "<group>"; };
 		AA33FB6B1C249D7C007B4342 /* iPodTouchLogo.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iPodTouchLogo.jpeg; sourceTree = "<group>"; };
-		AA33FB6D1C24A945007B4342 /* ProductWebPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductWebPageViewController.h; sourceTree = "<group>"; };
-		AA33FB6E1C24A945007B4342 /* ProductWebPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductWebPageViewController.m; sourceTree = "<group>"; };
+		AA33FB791C3D8891007B4342 /* ProductWebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductWebViewViewController.h; sourceTree = "<group>"; };
+		AA33FB7A1C3D8891007B4342 /* ProductWebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductWebViewViewController.m; sourceTree = "<group>"; };
+		AA33FB7F1C3D8DE0007B4342 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ProductWebViewViewController.xib; sourceTree = "<group>"; };
+		AA33FB831C3DCE7C007B4342 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA33FB841C3DCE7C007B4342 /* WebKit.framework in Frameworks */,
 				48A656B718163BF200746D36 /* CoreGraphics.framework in Frameworks */,
 				48A656B918163BF200746D36 /* UIKit.framework in Frameworks */,
 				48A656B518163BF200746D36 /* Foundation.framework in Frameworks */,
@@ -133,6 +138,7 @@
 			children = (
 				48A656E318163C1B00746D36 /* CompanyViewController.h */,
 				48A656E418163C1B00746D36 /* CompanyViewController.m */,
+				48A656E518163C1B00746D36 /* CompanyViewController.xib */,
 			);
 			name = ParentViewController;
 			sourceTree = "<group>";
@@ -168,6 +174,7 @@
 		48A656B318163BF200746D36 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA33FB831C3DCE7C007B4342 /* WebKit.framework */,
 				48A656B418163BF200746D36 /* Foundation.framework */,
 				48A656B618163BF200746D36 /* CoreGraphics.framework */,
 				48A656B818163BF200746D36 /* UIKit.framework */,
@@ -182,9 +189,8 @@
 				483796CB1BCBF7A00062D5AB /* AppDelegate */,
 				483796CC1BCBF7C70062D5AB /* ParentViewController */,
 				483796CD1BCBF7EB0062D5AB /* ProductViewController */,
-				AA33FB701C24A94D007B4342 /* ProductWebPageViewController */,
 				48A656C618163BF200746D36 /* Images.xcassets */,
-				48A656E518163C1B00746D36 /* CompanyViewController.xib */,
+				AA33FB751C3D87D4007B4342 /* productWebView */,
 				48A656BB18163BF200746D36 /* Supporting Files */,
 			);
 			path = NavCtrl;
@@ -268,13 +274,14 @@
 			name = "Pantech Icons";
 			sourceTree = "<group>";
 		};
-		AA33FB701C24A94D007B4342 /* ProductWebPageViewController */ = {
+		AA33FB751C3D87D4007B4342 /* productWebView */ = {
 			isa = PBXGroup;
 			children = (
-				AA33FB6D1C24A945007B4342 /* ProductWebPageViewController.h */,
-				AA33FB6E1C24A945007B4342 /* ProductWebPageViewController.m */,
+				AA33FB791C3D8891007B4342 /* ProductWebViewViewController.h */,
+				AA33FB7A1C3D8891007B4342 /* ProductWebViewViewController.m */,
+				AA33FB801C3D8DE0007B4342 /* ProductWebViewViewController.xib */,
 			);
-			name = ProductWebPageViewController;
+			name = productWebView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -363,6 +370,7 @@
 				AA33FB5C1C249D52007B4342 /* GalaxyNoteLogo.jpeg in Resources */,
 				AA33FB581C249D46007B4342 /* EaseLogo.jpeg in Resources */,
 				48A656E718163C1B00746D36 /* CompanyViewController.xib in Resources */,
+				AA33FB7E1C3D8DE0007B4342 /* ProductWebViewViewController.xib in Resources */,
 				AA33FB4A1C247A4D007B4342 /* LGIcon.png in Resources */,
 				AA33FB5E1C249D58007B4342 /* GalaxyS4Logo.jpeg in Resources */,
 				AA33FB641C249D68007B4342 /* GFlexLogo.jpeg in Resources */,
@@ -391,9 +399,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA33FB6F1C24A945007B4342 /* ProductWebPageViewController.m in Sources */,
 				48A656E618163C1B00746D36 /* CompanyViewController.m in Sources */,
 				48A656C518163BF200746D36 /* NavControllerAppDelegate.m in Sources */,
+				AA33FB7C1C3D8891007B4342 /* ProductWebViewViewController.m in Sources */,
 				48A656C118163BF200746D36 /* main.m in Sources */,
 				48A656EB18163F8700746D36 /* ProductViewController.m in Sources */,
 			);
@@ -432,6 +440,14 @@
 				48A656D718163BF200746D36 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		AA33FB801C3D8DE0007B4342 /* ProductWebViewViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AA33FB7F1C3D8DE0007B4342 /* en */,
+			);
+			name = ProductWebViewViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

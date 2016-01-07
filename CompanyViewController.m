@@ -36,8 +36,8 @@
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     
-    self.companyList = @[@"Apple mobile devices",@"Samsung mobile devices",@"LG Electronics", @"Pantech"];
-    
+    NSArray *companyArray = @[@"Apple mobile devices",@"Samsung mobile devices",@"LG Electronics", @"Pantech"];
+    self.companyList = [NSMutableArray arrayWithArray:companyArray];
     self.title = @"Mobile device makers";
     
 }
@@ -87,40 +87,42 @@
     else if ([cell.textLabel.text isEqualToString:@"Pantech"]){
         cell.imageView.image = [UIImage imageNamed:@"pantechicon.png"];
     }
-    
-    
     return cell;
 }
 
-/*
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
 
-/*
+
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        [self.companyList removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
 
-/*
+
+
 // Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath{
+    NSString *stringToMove = [self.companyList objectAtIndex:fromIndexPath.row];
+    
+    [self.companyList removeObjectAtIndex:fromIndexPath.row];
+    [self.companyList insertObject:stringToMove atIndex:toIndexPath.row];
 }
-*/
+
 
 /*
 // Override to support conditional rearranging of the table view.
@@ -137,19 +139,19 @@
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
-    if (indexPath.row == 0){
+    
+    NSString *company = [self.companyList objectAtIndex:[indexPath row]];
+    
+    if ([company isEqualToString:@"Apple mobile devices"]){
         self.productViewController.title = @"Apple mobile devices";
-    }
-    else if(indexPath.row == 1){
+    } else if ([company isEqualToString: @"Samsung mobile devices"]) {
         self.productViewController.title = @"Samsung mobile devices";
+    }else if ([company isEqualToString: @"LG mobile devices"]) {
+        self.productViewController.title = @"LG mobile devices";
+    }else {
+        self.productViewController.title = @"HTC mobile devices";
     }
-    else if (indexPath.row == 2){
-        self.productViewController.title = @"LG Electronics";
-    }
-    else if (indexPath.row == 3){
-        self.productViewController.title = @"Pantech";
-    }
+
     [self.navigationController
         pushViewController:self.productViewController
         animated:YES];

@@ -35,8 +35,12 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+    Company *apple = [[Company alloc]initWithName:@"Apple Mobile Devices"];
+    Company *samsung = [[Company alloc]initWithName:@"Samsung Mobile Devices"];
+    Company *LG = [[Company alloc]initWithName:@"LG Electronics"];
+    Company *Pantech = [[Company alloc]initWithName:@"Pantech"];
     
-    NSArray *companyArray = @[@"Apple mobile devices",@"Samsung mobile devices",@"LG Electronics", @"Pantech"];
+    NSArray *companyArray = @[apple.name, samsung.name, LG.name, Pantech.name];
     self.companyList = [NSMutableArray arrayWithArray:companyArray];
     self.title = @"Mobile device makers";
     
@@ -75,10 +79,10 @@
     // Configure the cell...
     
     cell.textLabel.text = [self.companyList objectAtIndex:[indexPath row]];
-    if ([cell.textLabel.text isEqualToString: @"Apple mobile devices"]) {
+    if ([cell.textLabel.text isEqualToString: @"Apple Mobile Devices"]) {
         cell.imageView.image = [UIImage imageNamed:@"AppleIcon.png"];
     }
-    else if ([cell.textLabel.text isEqualToString:@"Samsung mobile devices"]){
+    else if ([cell.textLabel.text isEqualToString:@"Samsung Mobile Devices"]){
         cell.imageView.image = [UIImage imageNamed:@"SamsungIcon.png"];
     }
     else if ([cell.textLabel.text isEqualToString:@"LG Electronics"]){
@@ -142,14 +146,14 @@
     
     NSString *company = [self.companyList objectAtIndex:[indexPath row]];
     
-    if ([company isEqualToString:@"Apple mobile devices"]){
-        self.productViewController.title = @"Apple mobile devices";
-    } else if ([company isEqualToString: @"Samsung mobile devices"]) {
-        self.productViewController.title = @"Samsung mobile devices";
-    }else if ([company isEqualToString: @"LG mobile devices"]) {
-        self.productViewController.title = @"LG mobile devices";
+    if ([company isEqualToString:@"Apple Mobile Devices"]){
+        self.productViewController.title = @"Apple Mobile Devices";
+    } else if ([company isEqualToString: @"Samsung Mobile Devices"]) {
+        self.productViewController.title = @"Samsung Mobile Devices";
+    }else if ([company isEqualToString: @"LG Electronics"]) {
+        self.productViewController.title = @"LG Electronics";
     }else {
-        self.productViewController.title = @"HTC mobile devices";
+        self.productViewController.title = @"Pantech";
     }
 
     [self.navigationController

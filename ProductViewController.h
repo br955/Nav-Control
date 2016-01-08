@@ -8,14 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductWebViewViewController.h"
+#import "DAO.h"
+
 
 @interface ProductViewController : UITableViewController
+
 @property (nonatomic, retain) NSMutableArray *products;
 
-@property (nonatomic, retain) NSMutableArray *apple;
-@property (nonatomic, retain) NSMutableArray *samsung;
-@property (nonatomic, retain) NSMutableArray *lg;
-@property (nonatomic, retain) NSMutableArray *pantech;
+@property (nonatomic, retain) Company *apple;
+@property (nonatomic, retain) Company *samsung;
+@property (nonatomic, retain) Company *lg;
+@property (nonatomic, retain) Company *pantech;
 
 @property (nonatomic, retain) ProductWebViewViewController *page;
 

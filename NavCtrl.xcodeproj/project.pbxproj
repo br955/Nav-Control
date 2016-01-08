@@ -42,6 +42,9 @@
 		AA33FB7C1C3D8891007B4342 /* ProductWebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA33FB7A1C3D8891007B4342 /* ProductWebViewViewController.m */; };
 		AA33FB7E1C3D8DE0007B4342 /* ProductWebViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA33FB801C3D8DE0007B4342 /* ProductWebViewViewController.xib */; };
 		AA33FB841C3DCE7C007B4342 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA33FB831C3DCE7C007B4342 /* WebKit.framework */; };
+		AA33FB891C402110007B4342 /* Company.m in Sources */ = {isa = PBXBuildFile; fileRef = AA33FB881C402110007B4342 /* Company.m */; };
+		AA33FB8C1C40211D007B4342 /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = AA33FB8B1C40211D007B4342 /* Product.m */; };
+		AA33FB901C402F45007B4342 /* DAO.m in Sources */ = {isa = PBXBuildFile; fileRef = AA33FB8F1C402F45007B4342 /* DAO.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +100,12 @@
 		AA33FB7A1C3D8891007B4342 /* ProductWebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductWebViewViewController.m; sourceTree = "<group>"; };
 		AA33FB7F1C3D8DE0007B4342 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ProductWebViewViewController.xib; sourceTree = "<group>"; };
 		AA33FB831C3DCE7C007B4342 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		AA33FB871C402110007B4342 /* Company.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Company.h; sourceTree = "<group>"; };
+		AA33FB881C402110007B4342 /* Company.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Company.m; sourceTree = "<group>"; };
+		AA33FB8A1C40211D007B4342 /* Product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Product.h; sourceTree = "<group>"; };
+		AA33FB8B1C40211D007B4342 /* Product.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Product.m; sourceTree = "<group>"; };
+		AA33FB8E1C402F45007B4342 /* DAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAO.h; sourceTree = "<group>"; };
+		AA33FB8F1C402F45007B4342 /* DAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAO.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,11 +195,13 @@
 		48A656BA18163BF200746D36 /* NavCtrl */ = {
 			isa = PBXGroup;
 			children = (
+				AA33FB8D1C402F01007B4342 /* DAO */,
 				483796CB1BCBF7A00062D5AB /* AppDelegate */,
 				483796CC1BCBF7C70062D5AB /* ParentViewController */,
+				AA33FB861C4020D0007B4342 /* Company Class */,
 				483796CD1BCBF7EB0062D5AB /* ProductViewController */,
-				48A656C618163BF200746D36 /* Images.xcassets */,
 				AA33FB751C3D87D4007B4342 /* productWebView */,
+				AA33FB851C4020B2007B4342 /* Product Class */,
 				48A656BB18163BF200746D36 /* Supporting Files */,
 			);
 			path = NavCtrl;
@@ -208,6 +219,7 @@
 				48A656BD18163BF200746D36 /* InfoPlist.strings */,
 				48A656C018163BF200746D36 /* main.m */,
 				48A656C218163BF200746D36 /* NavCtrl-Prefix.pch */,
+				48A656C618163BF200746D36 /* Images.xcassets */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -282,6 +294,33 @@
 				AA33FB801C3D8DE0007B4342 /* ProductWebViewViewController.xib */,
 			);
 			name = productWebView;
+			sourceTree = "<group>";
+		};
+		AA33FB851C4020B2007B4342 /* Product Class */ = {
+			isa = PBXGroup;
+			children = (
+				AA33FB8A1C40211D007B4342 /* Product.h */,
+				AA33FB8B1C40211D007B4342 /* Product.m */,
+			);
+			name = "Product Class";
+			sourceTree = "<group>";
+		};
+		AA33FB861C4020D0007B4342 /* Company Class */ = {
+			isa = PBXGroup;
+			children = (
+				AA33FB871C402110007B4342 /* Company.h */,
+				AA33FB881C402110007B4342 /* Company.m */,
+			);
+			name = "Company Class";
+			sourceTree = "<group>";
+		};
+		AA33FB8D1C402F01007B4342 /* DAO */ = {
+			isa = PBXGroup;
+			children = (
+				AA33FB8E1C402F45007B4342 /* DAO.h */,
+				AA33FB8F1C402F45007B4342 /* DAO.m */,
+			);
+			name = DAO;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -399,8 +438,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA33FB8C1C40211D007B4342 /* Product.m in Sources */,
 				48A656E618163C1B00746D36 /* CompanyViewController.m in Sources */,
+				AA33FB891C402110007B4342 /* Company.m in Sources */,
 				48A656C518163BF200746D36 /* NavControllerAppDelegate.m in Sources */,
+				AA33FB901C402F45007B4342 /* DAO.m in Sources */,
 				AA33FB7C1C3D8891007B4342 /* ProductWebViewViewController.m in Sources */,
 				48A656C118163BF200746D36 /* main.m in Sources */,
 				48A656EB18163F8700746D36 /* ProductViewController.m in Sources */,

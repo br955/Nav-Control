@@ -33,27 +33,42 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    self.apple = [NSMutableArray arrayWithObjects:@"iPad", @"iPod Touch",@"iPhone", nil];
-    self.samsung= [NSMutableArray arrayWithObjects:@"Galaxy S4", @"Galaxy Note", @"Galaxy Tab", nil];
-    self.lg = [NSMutableArray arrayWithObjects:@"G4",@"G Watch", @"G Flex", nil];
-    self.pantech = [NSMutableArray arrayWithObjects:@"Breakout", @"Hotshot", @"Ease", nil];
+    Product *iPad = [[Product alloc]initWithName:@"iPad" SiteURL:@"http://www.apple.com/ipad/"];
+    Product *iPodTouch = [[Product alloc]initWithName:@"iPod Touch" SiteURL:@"http://www.apple.com/ipod-touch/"];
+    Product *iPhone = [[Product alloc]initWithName:@"iPhone" SiteURL:@"http://www.apple.com/iphone/"];
+    Product *s4 = [[Product alloc]initWithName:@"Galaxy S4" SiteURL:@"http://www.samsung.com/global/microsite/galaxys4/"];
+    Product *note = [[Product alloc]initWithName:@"Galaxy Note" SiteURL:@"http://www.samsung.com/global/microsite/galaxynote/note/index.html?type=find"];
+    Product *tab = [[Product alloc]initWithName:@"Galaxy Tab" SiteURL:@"http://www.samsung.com/global/microsite/galaxytab/10.1/index.html"];
+    Product *g4 = [[Product alloc]initWithName:@"G4" SiteURL:@"http://www.lg.com/us/mobile-phones/g4"];
+    Product *gWatch = [[Product alloc]initWithName:@"G Watch" SiteURL:@"http://www.lg.com/global/gwatch/index.html#main"];
+    Product *gFlex = [[Product alloc]initWithName:@"G Flex" SiteURL:@"http://www.lg.com/us/lg-g-flex-phones"];
+    Product *breakout = [[Product alloc]initWithName:@"Breakout" SiteURL:@"http://www.pantechusa.com/phones/breakout"];
+    Product *hotshot = [[Product alloc]initWithName:@"Hotshot" SiteURL:@"http://www.gsmarena.com/pantech_breakout-4294.php"];
+    Product *ease = [[Product alloc]initWithName:@"Ease" SiteURL:@"http://www.gsmarena.com/pantech_ease-3405.php"];
+    
+    
+    
+    self.apple.productList = [NSMutableArray arrayWithObjects:iPad.name, iPodTouch.name, iPhone.name, nil];
+    self.samsung.productList= [NSMutableArray arrayWithObjects:s4.name, note.name, tab.name, nil];
+    self.lg.productList = [NSMutableArray arrayWithObjects:g4.name,gWatch.name, gFlex.name, nil];
+    self.pantech.productList = [NSMutableArray arrayWithObjects:breakout.name, hotshot.name, ease.name, nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     
     [super viewWillAppear:animated];
     
-    if ([self.title isEqualToString:@"Apple mobile devices"]) {
-        self.products = self.apple;
+    if ([self.title isEqualToString:@"Apple Mobile Devices"]) {
+        self.products = self.apple.productList;
     }
-    else if ([self.title isEqualToString:@"Samsung mobile devices"]){
-        self.products = self.samsung;
+    else if ([self.title isEqualToString:@"Samsung Mobile Devices"]){
+        self.products = self.samsung.productList;
     }
     else if ([self.title isEqualToString:@"LG Electronics"]){
-        self.products = self.lg;
+        self.products = self.lg.productList;
     }
     else {
-        self.products = self.pantech;
+        self.products = self.pantech.productList;
     }
     [self.tableView reloadData];
 }

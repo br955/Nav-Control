@@ -34,7 +34,7 @@
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     //
     
-    [[DAO sharedManager] init];
+//    [[DAO sharedManager] init];
     self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
     
     
@@ -45,16 +45,20 @@
     [super viewWillAppear:animated];
     
     if ([self.title isEqualToString:@"Apple Mobile Devices"]) {
-        self.products =  [[self.companyList valueForKey:@"productList"] objectAtIndex:0];
+       // self.products =  [[self.companyList valueForKey:@"productList"] objectAtIndex:0];
+        self.products =  [[self.companyList objectAtIndex:0]  valueForKey:@"productList"];
     }
     else if ([self.title isEqualToString:@"Samsung Mobile Devices"]){
-        self.products = [[self.companyList valueForKey:@"productList"] objectAtIndex:1];
+       // self.products = [[self.companyList valueForKey:@"productList"] objectAtIndex:1];
+        self.products =  [[self.companyList objectAtIndex:1]  valueForKey:@"productList"];
     }
     else if ([self.title isEqualToString:@"LG Electronics"]){
-        self.products = [[self.companyList valueForKey:@"productList"] objectAtIndex:2];
+        //self.products = [[self.companyList valueForKey:@"productList"] objectAtIndex:2];
+        self.products =  [[self.companyList objectAtIndex:2]  valueForKey:@"productList"];
     }
     else {
-        self.products = [[self.companyList valueForKey:@"productList"] objectAtIndex:3];
+        //self.products = [[self.companyList valueForKey:@"productList"] objectAtIndex:3];
+        self.products =  [[self.companyList objectAtIndex:3]  valueForKey:@"productList"];
     }
     [self.tableView reloadData];
 }
@@ -89,8 +93,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     // Configure the cell...
-    cell.textLabel.text = [[self.products valueForKey:@"name"] objectAtIndex:[indexPath row]];
-    cell.imageView.image = [[self.products valueForKey:@"icon"] objectAtIndex:[indexPath row]];
+    cell.textLabel.text = [[self.products objectAtIndex:[indexPath row]]valueForKey:@"name"];
+    cell.imageView.image = [UIImage imageNamed:[[self.products  objectAtIndex:[indexPath row]]valueForKey:@"icon"]];
     
     return cell;
     
@@ -124,9 +128,10 @@
 
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath{
-    NSString *stringToMove = [self.products objectAtIndex:fromIndexPath.row];
+    NSObject *companyToMove = [self.products objectAtIndex:fromIndexPath.row];
+    
     [self.products removeObjectAtIndex:fromIndexPath.row];
-    [self.products insertObject:stringToMove atIndex:toIndexPath.row];
+    [self.products insertObject:companyToMove atIndex:toIndexPath.row];
 
 }
 
@@ -153,7 +158,7 @@
         self.page = temp;
         [temp release];
     //}
-    self.page.URLName = [[self.products valueForKey:@"siteURL"] objectAtIndex:[indexPath row]];
+    self.page.URLName = [[self.products objectAtIndex:[indexPath row]]valueForKey:@"siteURL"];
 
 
     [self.navigationController pushViewController: self.page animated:YES];

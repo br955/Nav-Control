@@ -12,8 +12,8 @@
 
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *siteURL;
-@property (nonatomic, retain) UIImage *icon;
+@property (nonatomic, retain) NSString *icon;
 
--(id)initWithName: (NSString*) name SiteURL: (NSString*) siteURL Icon: (UIImage*) icon;
+-(id)initWithName: (NSString*) name SiteURL: (NSString*) siteURL Icon: (NSString*) icon;
 
 @end

@@ -37,7 +37,7 @@
 //    
 
     
-    [[DAO sharedManager] init];
+   // [DAO sharedManager];
     self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
     self.title = @"Mobile device makers";
     
@@ -75,8 +75,8 @@
     
     // Configure the cell...
     
-    cell.textLabel.text = [[self.companyList valueForKey:@"name" ] objectAtIndex:[indexPath row]];
-    cell.imageView.image = [[self.companyList valueForKey:@"companyIcon"] objectAtIndex:[indexPath row]];
+    cell.textLabel.text = [[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"name" ];
+    cell.imageView.image = [UIImage imageNamed:[[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"companyIcon"]];
     
     return cell;
 }
@@ -108,7 +108,7 @@
 
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath{
-    NSString *stringToMove = [self.companyList objectAtIndex:fromIndexPath.row];
+    NSObject *stringToMove = [self.companyList objectAtIndex:fromIndexPath.row];
     
     [self.companyList removeObjectAtIndex:fromIndexPath.row];
     [self.companyList insertObject:stringToMove atIndex:toIndexPath.row];
@@ -131,7 +131,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    NSString *company = [[self.companyList valueForKey:@"name" ] objectAtIndex:[indexPath row]];
+    NSString *company = [[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"name" ];
     
     if ([company isEqualToString:@"Apple Mobile Devices"]){
         self.productViewController.title = @"Apple Mobile Devices";

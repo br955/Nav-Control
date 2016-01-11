@@ -10,7 +10,7 @@
 
 @implementation Product
 
--(id)initWithName: (NSString*) name SiteURL: (NSString*) siteURL Icon:(UIImage *)icon{
+-(id)initWithName: (NSString*) name SiteURL: (NSString*) siteURL Icon:(NSString *)icon{
     _name = name;
     _siteURL = siteURL;
     _icon = icon;

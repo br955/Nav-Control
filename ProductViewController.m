@@ -32,26 +32,12 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    //
     
-    Product *iPad = [[Product alloc]initWithName:@"iPad" SiteURL:@"http://www.apple.com/ipad/"];
-    Product *iPodTouch = [[Product alloc]initWithName:@"iPod Touch" SiteURL:@"http://www.apple.com/ipod-touch/"];
-    Product *iPhone = [[Product alloc]initWithName:@"iPhone" SiteURL:@"http://www.apple.com/iphone/"];
-    Product *s4 = [[Product alloc]initWithName:@"Galaxy S4" SiteURL:@"http://www.samsung.com/global/microsite/galaxys4/"];
-    Product *note = [[Product alloc]initWithName:@"Galaxy Note" SiteURL:@"http://www.samsung.com/global/microsite/galaxynote/note/index.html?type=find"];
-    Product *tab = [[Product alloc]initWithName:@"Galaxy Tab" SiteURL:@"http://www.samsung.com/global/microsite/galaxytab/10.1/index.html"];
-    Product *g4 = [[Product alloc]initWithName:@"G4" SiteURL:@"http://www.lg.com/us/mobile-phones/g4"];
-    Product *gWatch = [[Product alloc]initWithName:@"G Watch" SiteURL:@"http://www.lg.com/global/gwatch/index.html#main"];
-    Product *gFlex = [[Product alloc]initWithName:@"G Flex" SiteURL:@"http://www.lg.com/us/lg-g-flex-phones"];
-    Product *breakout = [[Product alloc]initWithName:@"Breakout" SiteURL:@"http://www.pantechusa.com/phones/breakout"];
-    Product *hotshot = [[Product alloc]initWithName:@"Hotshot" SiteURL:@"http://www.gsmarena.com/pantech_breakout-4294.php"];
-    Product *ease = [[Product alloc]initWithName:@"Ease" SiteURL:@"http://www.gsmarena.com/pantech_ease-3405.php"];
+    [[DAO sharedManager] init];
+    self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
     
     
-    
-    self.apple.productList = [NSMutableArray arrayWithObjects:iPad.name, iPodTouch.name, iPhone.name, nil];
-    self.samsung.productList= [NSMutableArray arrayWithObjects:s4.name, note.name, tab.name, nil];
-    self.lg.productList = [NSMutableArray arrayWithObjects:g4.name,gWatch.name, gFlex.name, nil];
-    self.pantech.productList = [NSMutableArray arrayWithObjects:breakout.name, hotshot.name, ease.name, nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -59,16 +45,16 @@
     [super viewWillAppear:animated];
     
     if ([self.title isEqualToString:@"Apple Mobile Devices"]) {
-        self.products = self.apple.productList;
+        self.products =  [[self.companyList valueForKey:@"productList"] objectAtIndex:0];
     }
     else if ([self.title isEqualToString:@"Samsung Mobile Devices"]){
-        self.products = self.samsung.productList;
+        self.products = [[self.companyList valueForKey:@"productList"] objectAtIndex:1];
     }
     else if ([self.title isEqualToString:@"LG Electronics"]){
-        self.products = self.lg.productList;
+        self.products = [[self.companyList valueForKey:@"productList"] objectAtIndex:2];
     }
     else {
-        self.products = self.pantech.productList;
+        self.products = [[self.companyList valueForKey:@"productList"] objectAtIndex:3];
     }
     [self.tableView reloadData];
 }
@@ -103,43 +89,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     // Configure the cell...
-    cell.textLabel.text = [self.products objectAtIndex:[indexPath row]];
-    if ([cell.textLabel.text isEqualToString:@"iPad"]) {
-        cell.imageView.image = [UIImage imageNamed:@"iPadLogo.jpeg"];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"iPod Touch"]){
-        cell.imageView.image = [UIImage imageNamed:@"iPodTouchLogo.jpeg"];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"iPhone"]){
-        cell.imageView.image = [UIImage imageNamed:@"iPhoneLogo.png"];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"Galaxy S4"]){
-        cell.imageView.image = [UIImage imageNamed:@"GalaxyS4logo.jpeg"];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"Galaxy Note"]){
-        cell.imageView.image = [UIImage imageNamed:@"GalaxyNoteLogo.jpeg"];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"Galaxy Tab"]){
-        cell.imageView.image = [UIImage imageNamed:@"GalaxyNoteLogo.jpeg"];
-    }
-    else if([cell.textLabel.text isEqualToString:@"G4"]){
-        cell.imageView.image = [UIImage imageNamed:@"G4Logo.jpeg"];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"G Watch"]){
-        cell.imageView.image = [UIImage imageNamed:@"GWatchLogo.jpeg"];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"G Flex"]){
-        cell.imageView.image = [UIImage imageNamed:@"GFlexLogo.jpeg"];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"Breakout"]){
-        cell.imageView.image = [UIImage imageNamed:@"BreakoutLogo.jpeg"];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"Ease"]){
-        cell.imageView.image = [UIImage imageNamed:@"EaseLogo.jpeg"];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"Hotshot"]){
-        cell.imageView.image = [UIImage imageNamed:@"HotshotLogo.jpeg"];
-    }
+    cell.textLabel.text = [[self.products valueForKey:@"name"] objectAtIndex:[indexPath row]];
+    cell.imageView.image = [[self.products valueForKey:@"icon"] objectAtIndex:[indexPath row]];
+    
     return cell;
     
 }
@@ -201,44 +153,9 @@
         self.page = temp;
         [temp release];
     //}
-    if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"iPad"]) {
-        self.page.URLName = @"http://www.apple.com/ipad/";
-    }
-    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"iPhone"]) {
-        self.page.URLName = @"http://www.apple.com/iphone/";
-    }
-    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"iPod Touch"]) {
-        self.page.URLName = @"http://www.apple.com/ipod-touch/";
-    }
-    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"Galaxy S4"]) {
-        self.page.URLName = @"http://www.samsung.com/global/microsite/galaxys4/";
-    }
-    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"Galaxy Note"]) {
-        self.page.URLName = @"http://www.samsung.com/global/microsite/galaxynote/note/index.html?type=find";
-    }
-    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"Galaxy Tab"]) {
-        self.page.URLName = @"http://www.samsung.com/global/microsite/galaxytab/10.1/index.html";
-    }
-    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"G4"]) {
-        self.page.URLName = @"http://www.lg.com/us/mobile-phones/g4";
-    }
-    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"G Watch"]) {
-        self.page.URLName = @"http://www.lg.com/global/gwatch/index.html#main";
-    }
-    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"G Flex"]) {
-        self.page.URLName = @"http://www.lg.com/us/lg-g-flex-phones";
-    }
-    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"Breakout"]) {
-        self.page.URLName = @"http://www.pantechusa.com/phones/breakout";
-    }
-    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"Ease"]) {
-        self.page.URLName = @"http://www.gsmarena.com/pantech_ease-3405.php";
-    }
-    else if ([[self.products objectAtIndex:[indexPath row]] isEqualToString:@"Hotshot"]) {
-        self.page.URLName = @"http://www.gsmarena.com/pantech_breakout-4294.php";
-    }
-   
-    
+    self.page.URLName = [[self.products valueForKey:@"siteURL"] objectAtIndex:[indexPath row]];
+
+
     [self.navigationController pushViewController: self.page animated:YES];
 
     // Pass the selected object to the new view controller.

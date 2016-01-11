@@ -12,4 +12,13 @@
 
 @interface DAO : NSObject
 
+@property (nonatomic, retain) NSMutableArray *companies;
+
++(id) sharedManager;
+
+-(id) init;
+
+-(NSMutableArray*) getCompanyData;
+
+
 @end

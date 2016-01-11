@@ -10,8 +10,9 @@
 
 @implementation Company
 
--(id) initWithName: (NSString*) name {
-    _name = name;  
+-(id) initWithName: (NSString*) name Icon: (UIImage*) icon{
+    _name = name;
+    _companyIcon = icon;
     return self;
 }
 

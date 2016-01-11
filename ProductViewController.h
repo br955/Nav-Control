@@ -14,11 +14,8 @@
 @interface ProductViewController : UITableViewController
 
 @property (nonatomic, retain) NSMutableArray *products;
+@property (nonatomic, retain) NSArray *companyList;
 
-@property (nonatomic, retain) Company *apple;
-@property (nonatomic, retain) Company *samsung;
-@property (nonatomic, retain) Company *lg;
-@property (nonatomic, retain) Company *pantech;
 
 @property (nonatomic, retain) ProductWebViewViewController *page;
 

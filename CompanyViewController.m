@@ -34,14 +34,11 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+//    
+
     
-    Company *apple = [[Company alloc]initWithName:@"Apple Mobile Devices"];
-    Company *samsung = [[Company alloc]initWithName:@"Samsung Mobile Devices"];
-    Company *LG = [[Company alloc]initWithName:@"LG Electronics"];
-    Company *Pantech = [[Company alloc]initWithName:@"Pantech"];
-    
-    NSArray *companyArray = @[apple.name, samsung.name, LG.name, Pantech.name];
-    self.companyList = [NSMutableArray arrayWithArray:companyArray];
+    [[DAO sharedManager] init];
+    self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
     self.title = @"Mobile device makers";
     
 }
@@ -78,19 +75,9 @@
     
     // Configure the cell...
     
-    cell.textLabel.text = [self.companyList objectAtIndex:[indexPath row]];
-    if ([cell.textLabel.text isEqualToString: @"Apple Mobile Devices"]) {
-        cell.imageView.image = [UIImage imageNamed:@"AppleIcon.png"];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"Samsung Mobile Devices"]){
-        cell.imageView.image = [UIImage imageNamed:@"SamsungIcon.png"];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"LG Electronics"]){
-        cell.imageView.image = [UIImage imageNamed:@"LGIcon.png"];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"Pantech"]){
-        cell.imageView.image = [UIImage imageNamed:@"pantechicon.png"];
-    }
+    cell.textLabel.text = [[self.companyList valueForKey:@"name" ] objectAtIndex:[indexPath row]];
+    cell.imageView.image = [[self.companyList valueForKey:@"companyIcon"] objectAtIndex:[indexPath row]];
+    
     return cell;
 }
 
@@ -144,7 +131,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    NSString *company = [self.companyList objectAtIndex:[indexPath row]];
+    NSString *company = [[self.companyList valueForKey:@"name" ] objectAtIndex:[indexPath row]];
     
     if ([company isEqualToString:@"Apple Mobile Devices"]){
         self.productViewController.title = @"Apple Mobile Devices";

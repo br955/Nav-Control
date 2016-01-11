@@ -13,9 +13,9 @@
 
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSMutableArray *productList;
-@property (nonatomic, retain) UIImage *copmanyIcon;
+@property (nonatomic, retain) UIImage *companyIcon;
 
 
--(id) initWithName: (NSString*) name;
+-(id) initWithName: (NSString*) name Icon: (UIImage*) icon;
 
 @end

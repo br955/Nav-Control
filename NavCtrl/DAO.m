@@ -51,8 +51,23 @@
     return self;
 }
 
+-(NSMutableArray*) addCompany: (NSString*) name{
+    Company *newCompany = [[Company alloc] init];
+    newCompany.name = name;
+    [self.companies addObject: newCompany];
+    return self.companies;
+}
+
 -(NSMutableArray*) getCompanyData{
     return self.companies;
 }
 
 @end
+
+
+
+
+
+
+
+

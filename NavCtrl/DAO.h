@@ -18,6 +18,8 @@
 
 -(id) init;
 
+-(NSMutableArray*) addCompany: (NSString*) name;
+
 -(NSMutableArray*) getCompanyData;
 
 

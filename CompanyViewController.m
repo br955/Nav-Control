@@ -33,14 +33,18 @@
      self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;
 //    
-
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonPressed)];
+    self.navigationItem.rightBarButtonItem = addButton;
     
-   // [DAO sharedManager];
     self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
     self.title = @"Mobile device makers";
     
+}
+
+-(void) viewWillAppear:(BOOL)animated{
+    self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -130,26 +134,19 @@
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    NSString *company = [[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"name" ];
-    
-    if ([company isEqualToString:@"Apple Mobile Devices"]){
-        self.productViewController.title = @"Apple Mobile Devices";
-    } else if ([company isEqualToString: @"Samsung Mobile Devices"]) {
-        self.productViewController.title = @"Samsung Mobile Devices";
-    }else if ([company isEqualToString: @"LG Electronics"]) {
-        self.productViewController.title = @"LG Electronics";
-    }else {
-        self.productViewController.title = @"Pantech";
-    }
-
+        self.productViewController.title = [[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"name"];
+        self.productViewController.products = [[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"productList"];
     [self.navigationController
         pushViewController:self.productViewController
         animated:YES];
-    
-
 }
- 
+
+
+-(void) addButtonPressed {
+    
+    self.AddCompany = [[AddCompany alloc] initWithNibName:@"AddCompany" bundle:[NSBundle mainBundle]];
+    [self.navigationController pushViewController:self.AddCompany animated:YES];
+}
 
 
 @end

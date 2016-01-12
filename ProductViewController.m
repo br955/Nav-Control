@@ -32,34 +32,16 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    //self.navigationItem.leftBarButtonItem = self.addButtonItem;
     //
     
-//    [[DAO sharedManager] init];
     self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     
     [super viewWillAppear:animated];
-    
-    if ([self.title isEqualToString:@"Apple Mobile Devices"]) {
-       // self.products =  [[self.companyList valueForKey:@"productList"] objectAtIndex:0];
-        self.products =  [[self.companyList objectAtIndex:0]  valueForKey:@"productList"];
-    }
-    else if ([self.title isEqualToString:@"Samsung Mobile Devices"]){
-       // self.products = [[self.companyList valueForKey:@"productList"] objectAtIndex:1];
-        self.products =  [[self.companyList objectAtIndex:1]  valueForKey:@"productList"];
-    }
-    else if ([self.title isEqualToString:@"LG Electronics"]){
-        //self.products = [[self.companyList valueForKey:@"productList"] objectAtIndex:2];
-        self.products =  [[self.companyList objectAtIndex:2]  valueForKey:@"productList"];
-    }
-    else {
-        //self.products = [[self.companyList valueForKey:@"productList"] objectAtIndex:3];
-        self.products =  [[self.companyList objectAtIndex:3]  valueForKey:@"productList"];
-    }
+
     [self.tableView reloadData];
 }
 
@@ -121,6 +103,8 @@
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        
+        
     }   
 }
 
@@ -152,12 +136,10 @@
 {
     // Navigation logic may go here, for example:
 
-    // Create the next view controller.
-    //if (self.page == nil) {
         ProductWebViewViewController *temp = [[ProductWebViewViewController alloc] initWithNibName:@"ProductWebViewViewController" bundle:[NSBundle mainBundle]];
         self.page = temp;
         [temp release];
-    //}
+
     self.page.URLName = [[self.products objectAtIndex:[indexPath row]]valueForKey:@"siteURL"];
 
 

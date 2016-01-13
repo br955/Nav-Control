@@ -136,6 +136,7 @@
 {
         self.productViewController.title = [[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"name"];
         self.productViewController.products = [[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"productList"];
+    
     [self.navigationController
         pushViewController:self.productViewController
         animated:YES];

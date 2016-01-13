@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "ProductWebViewViewController.h"
 #import "DAO.h"
+#import "AddProduct.h"
 
+
+@class AddProduct;
 
 @interface ProductViewController : UITableViewController
 
@@ -18,5 +21,6 @@
 
 
 @property (nonatomic, retain) ProductWebViewViewController *page;
+@property (nonatomic, retain) AddProduct *AddProduct;
 
 @end

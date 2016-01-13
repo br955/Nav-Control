@@ -32,8 +32,9 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    //self.navigationItem.leftBarButtonItem = self.addButtonItem;
-    //
+    
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonPressed)];
+    self.navigationItem.rightBarButtonItem = addButton;
     
     self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
 }
@@ -149,6 +150,12 @@
 
     // Push the view controller.
 
+}
+
+-(void)addButtonPressed{
+    self.AddProduct = [[AddProduct alloc] initWithNibName:@"AddProduct" bundle:[NSBundle mainBundle]];
+    self.AddProduct.companyName = self.title;
+    [self.navigationController pushViewController:self.AddProduct animated:YES];
 }
 
 - (void)dealloc {

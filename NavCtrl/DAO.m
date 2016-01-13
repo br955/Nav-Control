@@ -46,7 +46,6 @@
     pantech.productList = [NSMutableArray arrayWithObjects:breakout, hotshot, ease, nil];
     
     self.companies = [NSMutableArray arrayWithObjects:apple, samsung, lg, pantech, nil];
-    
     }
     return self;
 }
@@ -55,6 +54,21 @@
     Company *newCompany = [[Company alloc] init];
     newCompany.name = name;
     [self.companies addObject: newCompany];
+    return self.companies;
+}
+
+-(NSMutableArray*) addProduct: (NSString*) name forCompany: (NSString*) company{
+    Product *newProduct = [[Product alloc]init];
+    newProduct.name = name;
+    int i = 0;
+    while(i<self.companies.count){
+        if([[[self.companies objectAtIndex:i] valueForKey:@"name"] isEqualToString:company]){
+            Company *temp = [self.companies objectAtIndex:i];
+            [temp.productList addObject:newProduct];
+            self.companies[i] = temp;
+        }
+        i++;
+    }
     return self.companies;
 }
 

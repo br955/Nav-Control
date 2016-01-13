@@ -13,4 +13,9 @@
 
 @interface AddProduct : UIViewController
 
+@property (retain, nonatomic) IBOutlet UITextField *productName;
+@property (retain, nonatomic) NSString *companyName;
+
+- (IBAction)finishNewProduct:(id)sender;
+
 @end

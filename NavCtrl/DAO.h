@@ -24,4 +24,8 @@
 
 -(NSMutableArray*) addProduct: (NSString*) name forCompany: (NSString*) company;
 
+-(NSMutableArray*) editCompany: (NSString*) newName fromName: (NSString*) oldName;
+
+-(NSMutableArray*) editProduct: (NSString*) newName fromName: (NSString*) oldName forCompany: (NSString*) company;
+
 @end

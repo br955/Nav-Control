@@ -49,6 +49,10 @@
 		AA33FBA91C4578F5007B4342 /* AddCompany.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA33FBA71C4578F5007B4342 /* AddCompany.xib */; };
 		AA33FBAE1C45BE85007B4342 /* AddProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = AA33FBAC1C45BE85007B4342 /* AddProduct.m */; };
 		AA33FBAF1C45BE85007B4342 /* AddProduct.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA33FBAD1C45BE85007B4342 /* AddProduct.xib */; };
+		AA33FBB41C46D1D3007B4342 /* EditCompany.m in Sources */ = {isa = PBXBuildFile; fileRef = AA33FBB21C46D1D3007B4342 /* EditCompany.m */; };
+		AA33FBB51C46D1D3007B4342 /* EditCompany.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA33FBB31C46D1D3007B4342 /* EditCompany.xib */; };
+		AA33FBBA1C46D1F6007B4342 /* EditProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = AA33FBB81C46D1F6007B4342 /* EditProduct.m */; };
+		AA33FBBB1C46D1F6007B4342 /* EditProduct.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA33FBB91C46D1F6007B4342 /* EditProduct.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +120,12 @@
 		AA33FBAB1C45BE85007B4342 /* AddProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddProduct.h; sourceTree = "<group>"; };
 		AA33FBAC1C45BE85007B4342 /* AddProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddProduct.m; sourceTree = "<group>"; };
 		AA33FBAD1C45BE85007B4342 /* AddProduct.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddProduct.xib; sourceTree = "<group>"; };
+		AA33FBB11C46D1D3007B4342 /* EditCompany.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCompany.h; sourceTree = "<group>"; };
+		AA33FBB21C46D1D3007B4342 /* EditCompany.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCompany.m; sourceTree = "<group>"; };
+		AA33FBB31C46D1D3007B4342 /* EditCompany.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditCompany.xib; sourceTree = "<group>"; };
+		AA33FBB71C46D1F6007B4342 /* EditProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditProduct.h; sourceTree = "<group>"; };
+		AA33FBB81C46D1F6007B4342 /* EditProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditProduct.m; sourceTree = "<group>"; };
+		AA33FBB91C46D1F6007B4342 /* EditProduct.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditProduct.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,15 +215,11 @@
 		48A656BA18163BF200746D36 /* NavCtrl */ = {
 			isa = PBXGroup;
 			children = (
-				AA33FBAA1C45BE31007B4342 /* AddProductViewController */,
-				AA33FBA41C45788E007B4342 /* AddCompanyViewController */,
+				AA33FBBE1C46D2E0007B4342 /* Main Views */,
+				AA33FBBD1C46D2A9007B4342 /* Company/product classes */,
+				AA33FBBC1C46D28C007B4342 /* Add/Edit */,
 				AA33FB8D1C402F01007B4342 /* DAO */,
 				483796CB1BCBF7A00062D5AB /* AppDelegate */,
-				483796CC1BCBF7C70062D5AB /* ParentViewController */,
-				AA33FB861C4020D0007B4342 /* Company Class */,
-				483796CD1BCBF7EB0062D5AB /* ProductViewController */,
-				AA33FB751C3D87D4007B4342 /* productWebView */,
-				AA33FB851C4020B2007B4342 /* Product Class */,
 				48A656BB18163BF200746D36 /* Supporting Files */,
 			);
 			path = NavCtrl;
@@ -355,6 +361,56 @@
 			name = AddProductViewController;
 			sourceTree = "<group>";
 		};
+		AA33FBB01C46D1AE007B4342 /* EditCompanyViewController */ = {
+			isa = PBXGroup;
+			children = (
+				AA33FBB11C46D1D3007B4342 /* EditCompany.h */,
+				AA33FBB21C46D1D3007B4342 /* EditCompany.m */,
+				AA33FBB31C46D1D3007B4342 /* EditCompany.xib */,
+			);
+			name = EditCompanyViewController;
+			sourceTree = "<group>";
+		};
+		AA33FBB61C46D1D8007B4342 /* EditProductViewController */ = {
+			isa = PBXGroup;
+			children = (
+				AA33FBB71C46D1F6007B4342 /* EditProduct.h */,
+				AA33FBB81C46D1F6007B4342 /* EditProduct.m */,
+				AA33FBB91C46D1F6007B4342 /* EditProduct.xib */,
+			);
+			name = EditProductViewController;
+			sourceTree = "<group>";
+		};
+		AA33FBBC1C46D28C007B4342 /* Add/Edit */ = {
+			isa = PBXGroup;
+			children = (
+				AA33FBA41C45788E007B4342 /* AddCompanyViewController */,
+				AA33FBAA1C45BE31007B4342 /* AddProductViewController */,
+				AA33FBB01C46D1AE007B4342 /* EditCompanyViewController */,
+				AA33FBB61C46D1D8007B4342 /* EditProductViewController */,
+			);
+			name = Add/Edit;
+			sourceTree = "<group>";
+		};
+		AA33FBBD1C46D2A9007B4342 /* Company/product classes */ = {
+			isa = PBXGroup;
+			children = (
+				AA33FB851C4020B2007B4342 /* Product Class */,
+				AA33FB861C4020D0007B4342 /* Company Class */,
+			);
+			name = "Company/product classes";
+			sourceTree = "<group>";
+		};
+		AA33FBBE1C46D2E0007B4342 /* Main Views */ = {
+			isa = PBXGroup;
+			children = (
+				AA33FB751C3D87D4007B4342 /* productWebView */,
+				483796CD1BCBF7EB0062D5AB /* ProductViewController */,
+				483796CC1BCBF7C70062D5AB /* ParentViewController */,
+			);
+			name = "Main Views";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -436,6 +492,7 @@
 				AA33FB6C1C249D7C007B4342 /* iPodTouchLogo.jpeg in Resources */,
 				AA33FB501C247AF2007B4342 /* SamsungIcon.png in Resources */,
 				AA33FB661C249D6D007B4342 /* GWatchLogo.jpeg in Resources */,
+				AA33FBB51C46D1D3007B4342 /* EditCompany.xib in Resources */,
 				AA33FB561C249D40007B4342 /* BreakoutLogo.jpeg in Resources */,
 				48A656EE1816468000746D36 /* Sunflower.gif in Resources */,
 				AA33FB5C1C249D52007B4342 /* GalaxyNoteLogo.jpeg in Resources */,
@@ -447,6 +504,7 @@
 				AA33FB5E1C249D58007B4342 /* GalaxyS4Logo.jpeg in Resources */,
 				AA33FB641C249D68007B4342 /* GFlexLogo.jpeg in Resources */,
 				AA33FB621C249D61007B4342 /* G4Logo.jpeg in Resources */,
+				AA33FBBB1C46D1F6007B4342 /* EditProduct.xib in Resources */,
 				48A656BF18163BF200746D36 /* InfoPlist.strings in Resources */,
 				AA33FB601C249D5C007B4342 /* GalaxyTabLogo.jpeg in Resources */,
 				AA33FB5A1C249D4B007B4342 /* HotshotLogo.jpeg in Resources */,
@@ -475,9 +533,11 @@
 				AA33FB8C1C40211D007B4342 /* Product.m in Sources */,
 				AA33FBA81C4578F5007B4342 /* AddCompany.m in Sources */,
 				48A656E618163C1B00746D36 /* CompanyViewController.m in Sources */,
+				AA33FBBA1C46D1F6007B4342 /* EditProduct.m in Sources */,
 				AA33FB891C402110007B4342 /* Company.m in Sources */,
 				48A656C518163BF200746D36 /* NavControllerAppDelegate.m in Sources */,
 				AA33FBAE1C45BE85007B4342 /* AddProduct.m in Sources */,
+				AA33FBB41C46D1D3007B4342 /* EditCompany.m in Sources */,
 				AA33FB901C402F45007B4342 /* DAO.m in Sources */,
 				AA33FB7C1C3D8891007B4342 /* ProductWebViewViewController.m in Sources */,
 				48A656C118163BF200746D36 /* main.m in Sources */,

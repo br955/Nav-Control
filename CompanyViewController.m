@@ -41,10 +41,14 @@
     self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
     self.title = @"Mobile device makers";
     
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPresser:)];
+    [self.view addGestureRecognizer:longPress];
+    [longPress release];
 }
 
 -(void) viewWillAppear:(BOOL)animated{
     self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,14 +61,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
+
     // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
+
     // Return the number of rows in the section.
     return [self.companyList count];
 }
@@ -149,5 +153,24 @@
     [self.navigationController pushViewController:self.AddCompany animated:YES];
 }
 
+-(void)longPresser:(UILongPressGestureRecognizer*)gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        CGPoint location = [gestureRecognizer locationInView:self.tableView];
+        NSIndexPath *touchedIndexPath = [self.tableView indexPathForRowAtPoint:location];
+        self.EditCompany = [[EditCompany alloc]initWithNibName:@"EditCompany" bundle:[NSBundle mainBundle]];
+        self.EditCompany.title = [[self.companyList objectAtIndex:[touchedIndexPath row]] valueForKey:@"name"];
+        [self.navigationController pushViewController:self.EditCompany animated:YES];
+    }
+}
+
 
 @end
+
+
+
+
+
+
+
+

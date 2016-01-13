@@ -72,6 +72,39 @@
     return self.companies;
 }
 
+-(NSMutableArray*) editCompany: (NSString*) newName fromName: (NSString*) oldName{
+    int i = 0;
+    while (i<self.companies.count) {
+        if ([[[self.companies objectAtIndex:i]valueForKey:@"name"] isEqualToString:oldName]) {
+            Company *temp = self.companies[i];
+            temp.name = newName;
+            self.companies[i] = temp;
+        }
+        i++;
+    }
+    return self.companies;
+}
+
+-(NSMutableArray*) editProduct: (NSString*) newName fromName: (NSString*) oldName forCompany: (NSString*) company{
+    int i = 0;
+    while (i<self.companies.count) {
+        if ([[[self.companies objectAtIndex:i] valueForKey:@"name"] isEqualToString:company]) {
+            int z = 0;
+            Company *tempCompany = self.companies[i];
+            while (z<tempCompany.productList.count) {
+                if ([[[tempCompany.productList objectAtIndex:z] valueForKey:@"name"] isEqualToString:oldName]) {
+                    Product *tempProduct = tempCompany.productList[z];
+                    tempProduct.name = newName;
+                    tempCompany.productList[z] = tempProduct;
+                }
+                z++;
+            }
+        }
+        i++;
+    }
+    return self.companies;
+}
+
 -(NSMutableArray*) getCompanyData{
     return self.companies;
 }

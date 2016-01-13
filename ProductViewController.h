@@ -10,9 +10,10 @@
 #import "ProductWebViewViewController.h"
 #import "DAO.h"
 #import "AddProduct.h"
-
+#import "EditProduct.h"
 
 @class AddProduct;
+@class EditProduct;
 
 @interface ProductViewController : UITableViewController
 
@@ -22,5 +23,6 @@
 
 @property (nonatomic, retain) ProductWebViewViewController *page;
 @property (nonatomic, retain) AddProduct *AddProduct;
+@property (nonatomic, retain) EditProduct *EditProduct;
 
 @end

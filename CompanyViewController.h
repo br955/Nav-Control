@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "DAO.h"
 #import "AddCompany.h"
+#import "EditCompany.h"
 
 @class ProductViewController;
 @class AddCompany;
+@class EditCompany;
 
 @interface CompanyViewController : UITableViewController
 
@@ -20,5 +22,6 @@
 
 @property (nonatomic, retain) IBOutlet ProductViewController *productViewController;
 @property (nonatomic, retain) AddCompany *AddCompany;
+@property (nonatomic, retain) EditCompany *EditCompany;
 
 @end

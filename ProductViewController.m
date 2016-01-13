@@ -37,6 +37,10 @@
     self.navigationItem.rightBarButtonItem = addButton;
     
     self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPresser:)];
+    [self.view addGestureRecognizer:longPress];
+    [longPress release];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -56,14 +60,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
+
     // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
+
     // Return the number of rows in the section.
     return [self.products count];
 }
@@ -156,6 +160,19 @@
     self.AddProduct = [[AddProduct alloc] initWithNibName:@"AddProduct" bundle:[NSBundle mainBundle]];
     self.AddProduct.companyName = self.title;
     [self.navigationController pushViewController:self.AddProduct animated:YES];
+}
+
+-(void)longPresser:(UILongPressGestureRecognizer*)gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        CGPoint location = [gestureRecognizer locationInView:self.tableView];
+        NSIndexPath *touchedIndexPath = [self.tableView indexPathForRowAtPoint:location];
+        
+        self.EditProduct = [[EditProduct alloc]initWithNibName:@"EditProduct" bundle:[NSBundle mainBundle]];
+        self.EditProduct.title = [[self.products objectAtIndex:[touchedIndexPath row]] valueForKey:@"name"];
+        self.EditProduct.company = self.title;
+        [self.navigationController pushViewController:self.EditProduct animated:YES];
+    }
 }
 
 - (void)dealloc {

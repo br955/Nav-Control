@@ -45,6 +45,11 @@
     lg.productList = [NSMutableArray arrayWithObjects:g4,gWatch, gFlex, nil];
     pantech.productList = [NSMutableArray arrayWithObjects:breakout, hotshot, ease, nil];
     
+    apple.stockSymbol = @"AAPL";
+        samsung.stockSymbol = @"SSNLF";
+        lg.stockSymbol = @"LG";
+        pantech.stockSymbol = @"5125.KL";
+        
     self.companies = [NSMutableArray arrayWithObjects:apple, samsung, lg, pantech, nil];
     }
     return self;

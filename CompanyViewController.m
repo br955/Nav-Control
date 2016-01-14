@@ -49,6 +49,65 @@
 -(void) viewWillAppear:(BOOL)animated{
     self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
     [self.tableView reloadData];
+    
+    self.stockPriceUrl = @"http://finance.yahoo.com/d/quotes.csv?s=";
+    for (int i = 0; i<self.companyList.count; i++) {
+        if ([self.companyList[i] valueForKey:@"stockSymbol"]!=nil) {
+            self.stockPriceUrl = [self.stockPriceUrl stringByAppendingString:[self.companyList[i] valueForKey:@"stockSymbol"]];
+            self.stockPriceUrl = [self.stockPriceUrl stringByAppendingString:@"+"];
+        }
+    }
+    
+    self.stockPriceUrl = [self.stockPriceUrl stringByAppendingString:@"&f=a"];
+    
+    NSURL *stockDataURL = [NSURL URLWithString:self.stockPriceUrl];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:stockDataURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    
+        //Convert csv to string
+        NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        
+        if (data == nil) {
+            NSLog(@"Error storing --- data is nil");
+            NSLog(@"Domain: %@", error.domain);
+            NSLog(@"Error Code: %ld", (long)error.code);
+            NSLog(@"Description: %@", [error localizedDescription]);
+            NSLog(@"Reason: %@", [error localizedFailureReason]);
+            NSLog(@"Company  Updated");
+            [dataString release]; dataString = nil;
+            
+        }else {
+            int i = 0;
+            NSArray *temp = [dataString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+            NSMutableArray *companyAndStockPrices = [NSMutableArray arrayWithArray:temp];
+            while (i<companyAndStockPrices.count) {
+                if ([companyAndStockPrices[i] isEqualToString: @""]) {
+                    [companyAndStockPrices removeObjectAtIndex:i];
+                }
+                i++;
+            }
+            [dataString release]; dataString = nil;
+            
+            NSMutableArray *stockCompanies = [NSMutableArray arrayWithCapacity:10];
+            
+            i = 0;
+            while (i< self.companyList.count) {
+                [stockCompanies addObject:[[self.companyList valueForKey:@"name"] objectAtIndex:i]];
+                if ([[[self.companyList objectAtIndex:i]valueForKey:@"stockSymbol"] isEqualToString:@""]) {
+                    [stockCompanies removeObject:[[self.companyList objectAtIndex:i]valueForKey:@"name"]];
+                }
+                i++;
+            }
+            self.priceByCompany = [[NSMutableDictionary alloc]initWithObjects:companyAndStockPrices forKeys:stockCompanies];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        }
+        
+    }];
+    [dataTask resume];
 }
 
 - (void)didReceiveMemoryWarning
@@ -78,13 +137,14 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
     // Configure the cell...
     
     cell.textLabel.text = [[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"name" ];
     cell.imageView.image = [UIImage imageNamed:[[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"companyIcon"]];
+    cell.detailTextLabel.text = [self.priceByCompany valueForKey:[[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"name"]];
     
     return cell;
 }

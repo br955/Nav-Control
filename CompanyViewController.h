@@ -19,6 +19,8 @@
 
 @property (nonatomic, retain) NSMutableArray *companyList;
 @property (nonatomic, retain) NSArray *companyIcons;
+@property (nonatomic, retain) NSString *stockPriceUrl;
+@property (nonatomic, retain) NSMutableDictionary *priceByCompany;
 
 @property (nonatomic, retain) IBOutlet ProductViewController *productViewController;
 @property (nonatomic, retain) AddCompany *AddCompany;

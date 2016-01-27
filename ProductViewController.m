@@ -102,6 +102,8 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        Product *tempProduct =[self.products objectAtIndex:indexPath.row];
+        [[DAO sharedManager] deleteProduct:tempProduct.name];
         [self.products removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         [tableView reloadData];

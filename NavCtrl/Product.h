@@ -13,6 +13,7 @@
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *siteURL;
 @property (nonatomic, retain) NSString *icon;
+@property (nonatomic, retain) NSNumber *companyID;
 
 -(id)initWithName: (NSString*) name SiteURL: (NSString*) siteURL Icon: (NSString*) icon;
 

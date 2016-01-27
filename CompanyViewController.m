@@ -38,7 +38,7 @@
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonPressed)];
     self.navigationItem.rightBarButtonItem = addButton;
     
-    self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
+//   [DAO sharedManager];
     self.title = @"Mobile device makers";
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPresser:)];
@@ -47,7 +47,7 @@
 }
 
 -(void) viewWillAppear:(BOOL)animated{
-    self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
+    self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager] getCompanyData]];
     [self.tableView reloadData];
     
     self.stockPriceUrl = @"http://finance.yahoo.com/d/quotes.csv?s=";
@@ -57,6 +57,7 @@
             self.stockPriceUrl = [self.stockPriceUrl stringByAppendingString:@"+"];
         }
     }
+    
     
     self.stockPriceUrl = [self.stockPriceUrl stringByAppendingString:@"&f=a"];
     
@@ -93,17 +94,22 @@
             NSMutableArray *stockCompanies = [NSMutableArray arrayWithCapacity:10];
             
             i = 0;
-            while (i< self.companyList.count) {
+            while (i < self.companyList.count) {
                 [stockCompanies addObject:[[self.companyList valueForKey:@"name"] objectAtIndex:i]];
                 if ([[[self.companyList objectAtIndex:i]valueForKey:@"stockSymbol"] isEqualToString:@""]) {
                     [stockCompanies removeObject:[[self.companyList objectAtIndex:i]valueForKey:@"name"]];
                 }
                 i++;
             }
-            self.priceByCompany = [[NSMutableDictionary alloc]initWithObjects:companyAndStockPrices forKeys:stockCompanies];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-            });
+            
+            if (companyAndStockPrices.count == stockCompanies.count) {
+                self.priceByCompany = [[NSMutableDictionary alloc]initWithObjects:companyAndStockPrices forKeys:stockCompanies];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
+            }
+            
+//
         }
         
     }];
@@ -164,6 +170,8 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        Company *tempCompany =  self.companyList[indexPath.row];
+        [[DAO sharedManager]deleteCompany: tempCompany.name];
         [self.companyList removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   

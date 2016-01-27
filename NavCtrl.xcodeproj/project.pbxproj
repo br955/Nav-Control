@@ -23,6 +23,10 @@
 		48A656E718163C1B00746D36 /* CompanyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A656E518163C1B00746D36 /* CompanyViewController.xib */; };
 		48A656EB18163F8700746D36 /* ProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A656E918163F8700746D36 /* ProductViewController.m */; };
 		48A656EE1816468000746D36 /* Sunflower.gif in Resources */ = {isa = PBXBuildFile; fileRef = 48A656ED1816468000746D36 /* Sunflower.gif */; };
+		AA06619E1C52D1C800091CEB /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AA06619D1C52D1C800091CEB /* libsqlite3.0.dylib */; };
+		AA0661B31C5698E900091CEB /* defaulticon.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AA0661B21C5698E900091CEB /* defaulticon.jpeg */; };
+		AA0661B51C56D43B00091CEB /* sqlitedatabase in Resources */ = {isa = PBXBuildFile; fileRef = AA0661B41C56D43B00091CEB /* sqlitedatabase */; };
+		AA0661B61C56D43B00091CEB /* sqlitedatabase in Resources */ = {isa = PBXBuildFile; fileRef = AA0661B41C56D43B00091CEB /* sqlitedatabase */; };
 		AA33FB4A1C247A4D007B4342 /* LGIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = AA33FB491C247A4D007B4342 /* LGIcon.png */; };
 		AA33FB4C1C247AD5007B4342 /* pantechicon.png in Resources */ = {isa = PBXBuildFile; fileRef = AA33FB4B1C247AD5007B4342 /* pantechicon.png */; };
 		AA33FB4E1C247ADF007B4342 /* AppleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = AA33FB4D1C247ADF007B4342 /* AppleIcon.png */; };
@@ -88,6 +92,9 @@
 		48A656E818163F8700746D36 /* ProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProductViewController.h; path = ../ProductViewController.h; sourceTree = "<group>"; };
 		48A656E918163F8700746D36 /* ProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProductViewController.m; path = ../ProductViewController.m; sourceTree = "<group>"; };
 		48A656ED1816468000746D36 /* Sunflower.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Sunflower.gif; sourceTree = "<group>"; };
+		AA06619D1C52D1C800091CEB /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		AA0661B21C5698E900091CEB /* defaulticon.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = defaulticon.jpeg; sourceTree = SOURCE_ROOT; };
+		AA0661B41C56D43B00091CEB /* sqlitedatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = sqlitedatabase; sourceTree = "<group>"; };
 		AA33FB491C247A4D007B4342 /* LGIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LGIcon.png; sourceTree = "<group>"; };
 		AA33FB4B1C247AD5007B4342 /* pantechicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pantechicon.png; sourceTree = "<group>"; };
 		AA33FB4D1C247ADF007B4342 /* AppleIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppleIcon.png; sourceTree = "<group>"; };
@@ -133,6 +140,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA06619E1C52D1C800091CEB /* libsqlite3.0.dylib in Frameworks */,
 				AA33FB841C3DCE7C007B4342 /* WebKit.framework in Frameworks */,
 				48A656B718163BF200746D36 /* CoreGraphics.framework in Frameworks */,
 				48A656B918163BF200746D36 /* UIKit.framework in Frameworks */,
@@ -203,6 +211,7 @@
 		48A656B318163BF200746D36 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA06619D1C52D1C800091CEB /* libsqlite3.0.dylib */,
 				AA33FB831C3DCE7C007B4342 /* WebKit.framework */,
 				48A656B418163BF200746D36 /* Foundation.framework */,
 				48A656B618163BF200746D36 /* CoreGraphics.framework */,
@@ -228,12 +237,14 @@
 		48A656BB18163BF200746D36 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AA0661B21C5698E900091CEB /* defaulticon.jpeg */,
 				48A656ED1816468000746D36 /* Sunflower.gif */,
 				AA33FB511C249CE6007B4342 /* Apple icons */,
 				AA33FB521C249CF4007B4342 /* LGIcons */,
 				AA33FB531C249CFB007B4342 /* Samsung Icons */,
 				AA33FB541C249D07007B4342 /* Pantech Icons */,
 				48A656BC18163BF200746D36 /* NavCtrl-Info.plist */,
+				AA0661B41C56D43B00091CEB /* sqlitedatabase */,
 				48A656BD18163BF200746D36 /* InfoPlist.strings */,
 				48A656C018163BF200746D36 /* main.m */,
 				48A656C218163BF200746D36 /* NavCtrl-Prefix.pch */,
@@ -505,9 +516,11 @@
 				AA33FB641C249D68007B4342 /* GFlexLogo.jpeg in Resources */,
 				AA33FB621C249D61007B4342 /* G4Logo.jpeg in Resources */,
 				AA33FBBB1C46D1F6007B4342 /* EditProduct.xib in Resources */,
+				AA0661B51C56D43B00091CEB /* sqlitedatabase in Resources */,
 				48A656BF18163BF200746D36 /* InfoPlist.strings in Resources */,
 				AA33FB601C249D5C007B4342 /* GalaxyTabLogo.jpeg in Resources */,
 				AA33FB5A1C249D4B007B4342 /* HotshotLogo.jpeg in Resources */,
+				AA0661B31C5698E900091CEB /* defaulticon.jpeg in Resources */,
 				AA33FB4E1C247ADF007B4342 /* AppleIcon.png in Resources */,
 				AA33FB6A1C249D78007B4342 /* iPhoneLogo.png in Resources */,
 				48A656C718163BF200746D36 /* Images.xcassets in Resources */,
@@ -519,6 +532,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA0661B61C56D43B00091CEB /* sqlitedatabase in Resources */,
 				48A656D818163BF200746D36 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

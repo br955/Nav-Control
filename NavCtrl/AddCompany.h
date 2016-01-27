@@ -14,6 +14,7 @@
 @interface AddCompany : UIViewController
 
 @property (retain, nonatomic) IBOutlet UITextField *companyName;
+@property (retain, nonatomic) IBOutlet UITextField *stockSymbol;
 
 - (IBAction)finishNamingCompany:(id)sender;
 

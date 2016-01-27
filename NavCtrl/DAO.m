@@ -22,62 +22,121 @@
 -(id) init{
     self = [super init];
     if(self){
-    Company *apple = [[Company alloc]initWithName:@"Apple Mobile Devices" Icon:@"AppleIcon.png"];
-    Company *samsung = [[Company alloc]initWithName:@"Samsung Mobile Devices"Icon:@"SamsungIcon.png"];
-    Company *lg = [[Company alloc]initWithName:@"LG Electronics"Icon:@"LGIcon.png"];
-    Company *pantech = [[Company alloc]initWithName:@"Pantech"Icon:@"pantechicon.png"];
-  //
-    Product *iPad = [[Product alloc]initWithName:@"iPad" SiteURL:@"http://www.apple.com/ipad/" Icon:@"iPadLogo.jpeg"];
-    Product *iPodTouch = [[Product alloc]initWithName:@"iPod Touch" SiteURL:@"http://www.apple.com/ipod-touch/" Icon:@"iPodTouchLogo.jpeg"];
-    Product *iPhone = [[Product alloc]initWithName:@"iPhone" SiteURL:@"http://www.apple.com/iphone/"Icon:@"iPhoneLogo.png"];
-    Product *s4 = [[Product alloc]initWithName:@"Galaxy S4" SiteURL:@"http://www.samsung.com/global/microsite/galaxys4/" Icon:@"GalaxyS4logo.jpeg"];
-    Product *note = [[Product alloc]initWithName:@"Galaxy Note" SiteURL:@"http://www.samsung.com/global/microsite/galaxynote/note/index.html?type=find" Icon:@"GalaxyNoteLogo.jpeg"];
-    Product *tab = [[Product alloc]initWithName:@"Galaxy Tab" SiteURL:@"http://www.samsung.com/global/microsite/galaxytab/10.1/index.html"Icon:@"GalaxyTabLogo.jpeg"];
-    Product *g4 = [[Product alloc]initWithName:@"G4" SiteURL:@"http://www.lg.com/us/mobile-phones/g4" Icon: @"G4Logo.jpeg"];
-    Product *gWatch = [[Product alloc]initWithName:@"G Watch" SiteURL:@"http://www.lg.com/global/gwatch/index.html#main" Icon:@"GWatchLogo.jpeg"];
-    Product *gFlex = [[Product alloc]initWithName:@"G Flex" SiteURL:@"http://www.lg.com/us/lg-g-flex-phones" Icon:@"GFlexLogo.jpeg"];
-    Product *breakout = [[Product alloc]initWithName:@"Breakout" SiteURL:@"http://www.pantechusa.com/phones/breakout"Icon:@"BreakoutLogo.jpeg"];
-    Product *hotshot = [[Product alloc]initWithName:@"Hotshot" SiteURL:@"http://www.gsmarena.com/pantech_breakout-4294.php"Icon:@"EaseLogo.jpeg"];
-    Product *ease = [[Product alloc]initWithName:@"Ease" SiteURL:@"http://www.gsmarena.com/pantech_ease-3405.php"Icon:@"HotshotLogo.jpeg"];
-  //
-    apple.productList = [NSMutableArray arrayWithObjects:iPad, iPodTouch, iPhone, nil];
-    samsung.productList= [NSMutableArray arrayWithObjects:s4, note, tab, nil];
-    lg.productList = [NSMutableArray arrayWithObjects:g4,gWatch, gFlex, nil];
-    pantech.productList = [NSMutableArray arrayWithObjects:breakout, hotshot, ease, nil];
-    
-    apple.stockSymbol = @"AAPL";
-        samsung.stockSymbol = @"SSNLF";
-        lg.stockSymbol = @"LG";
-        pantech.stockSymbol = @"5125.KL";
         
-    self.companies = [NSMutableArray arrayWithObjects:apple, samsung, lg, pantech, nil];
+    [self openDB];
+        sqlite3_stmt *statement;
+        self.companies = [[NSMutableArray alloc]init];
+        
+        if (sqlite3_open([self.dbPathString UTF8String], &_database) == SQLITE_OK) {
+            [self.companies removeAllObjects];
+            NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM Companies"];
+            const char *query_sql = [querySQL UTF8String];
+            if (sqlite3_prepare(self.database, query_sql, -1, &statement, NULL) == SQLITE_OK){
+                while (sqlite3_step(statement) == SQLITE_ROW) {
+                    NSString *name = [[NSString alloc]initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+                    NSString *stockSymbol =[[NSString alloc]initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
+                    Company *company = [[Company alloc]init];
+                    company.name = name;
+                    company.stockSymbol = stockSymbol;
+                    [self.companies addObject:company];
+                }
+            }
+            querySQL = [NSString stringWithFormat:@"SELECT * FROM Products"];
+            query_sql = [querySQL UTF8String];
+            if (sqlite3_prepare(self.database, query_sql, -1, &statement, NULL) == SQLITE_OK) {
+                while (sqlite3_step(statement) == SQLITE_ROW) {
+                    
+                    NSString *name = [[NSString alloc]initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
+                    NSString *siteURL = [[NSString alloc]initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)];
+                    Product *product = [[Product alloc]init];
+                    product.name = name;
+                    product.siteURL = siteURL;
+                    long x = sqlite3_column_int(statement, 1);
+                    product.companyID = [NSNumber numberWithLong:(x)];
+                    Company *company = [self.companies objectAtIndex:[product.companyID intValue]-1];
+                    if (company.productList == nil) {
+                        company.productList = [[NSMutableArray alloc]init];
+                    }
+                    [company.productList addObject:product];
+                    x = [product.companyID intValue]-1;
+                    self.companies[x] = company;
+                }
+            }
+            else {
+             NSLog(@"sqlite prepare failed: %s", sqlite3_errmsg(self.database));
+            }
+        }
+
     }
     return self;
 }
 
--(NSMutableArray*) addCompany: (NSString*) name{
+-(void)openDB{
+    NSError *error;
+    NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docPath = [path objectAtIndex:0];
+    self.dbPathString = [docPath stringByAppendingPathComponent:@"sqlitedatabase"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if(![fileManager fileExistsAtPath:self.dbPathString]){
+
+            NSString *bundleDataBasePath = [[NSBundle mainBundle] pathForResource:@"sqlitedatabase" ofType:@"" ];
+            [fileManager copyItemAtPath:bundleDataBasePath toPath:self.dbPathString error:&error];
+            if(![fileManager fileExistsAtPath:self.dbPathString]){
+                NSLog(@"%@", error);
+            }
+    }
+}
+
+
+
+-(NSMutableArray*) addCompany: (NSString*) name stockSymbol: (NSString*)stockSymbol{
+    char *error;
     Company *newCompany = [[Company alloc] init];
     newCompany.name = name;
+    newCompany.stockSymbol = stockSymbol;
+    //sqlite3_stmt *statement;
+    if (sqlite3_open([self.dbPathString UTF8String], &_database) == SQLITE_OK){
+        NSString *addToSQLTable = [NSString stringWithFormat:@"INSERT INTO Companies(Name, stockSymbol) VALUES ('%@','%@')",newCompany.name, newCompany.stockSymbol];
+        const char *sqlAdd = [addToSQLTable UTF8String];
+        if (sqlite3_exec(_database, sqlAdd, NULL, NULL, &error)==SQLITE_OK) {
+            NSLog(@"Company added to database");
+            
+        }
+        sqlite3_close(_database);
+    }
     [self.companies addObject: newCompany];
     return self.companies;
 }
 
 -(NSMutableArray*) addProduct: (NSString*) name forCompany: (NSString*) company{
+    char *error;
     Product *newProduct = [[Product alloc]init];
     newProduct.name = name;
+    newProduct.siteURL = @"www.google.com";
     int i = 0;
     while(i<self.companies.count){
         if([[[self.companies objectAtIndex:i] valueForKey:@"name"] isEqualToString:company]){
+            newProduct.companyID = [NSNumber numberWithInt: i+1];
             Company *temp = [self.companies objectAtIndex:i];
             [temp.productList addObject:newProduct];
             self.companies[i] = temp;
         }
         i++;
     }
+    if (sqlite3_open([self.dbPathString UTF8String], &_database) == SQLITE_OK){
+        NSString *addToSQLTable = [NSString stringWithFormat:@"INSERT INTO Products(Companyid ,Name, siteURL) VALUES (%@,'%@','%@')", newProduct.companyID ,newProduct.name, newProduct.siteURL];
+        const char *sqlAdd = [addToSQLTable UTF8String];
+        if (sqlite3_exec(_database, sqlAdd, NULL, NULL, &error)==SQLITE_OK) {
+            NSLog(@"Product added to database");
+        }
+        sqlite3_close(_database);
+    }
     return self.companies;
 }
 
 -(NSMutableArray*) editCompany: (NSString*) newName fromName: (NSString*) oldName{
+    char *error;
     int i = 0;
     while (i<self.companies.count) {
         if ([[[self.companies objectAtIndex:i]valueForKey:@"name"] isEqualToString:oldName]) {
@@ -87,10 +146,19 @@
         }
         i++;
     }
+    if (sqlite3_open([self.dbPathString UTF8String], &_database) == SQLITE_OK){
+        NSString *addToSQLTable = [NSString stringWithFormat:@"UPDATE Companies SET Name = '%@' WHERE Name = '%@'", newName, oldName];
+        const char *sqlAdd = [addToSQLTable UTF8String];
+        if (sqlite3_exec(_database, sqlAdd, NULL, NULL, &error)==SQLITE_OK) {
+            NSLog(@"Company renamed");
+        }
+        sqlite3_close(_database);
+    }
     return self.companies;
 }
 
 -(NSMutableArray*) editProduct: (NSString*) newName fromName: (NSString*) oldName forCompany: (NSString*) company{
+    char *error;
     int i = 0;
     while (i<self.companies.count) {
         if ([[[self.companies objectAtIndex:i] valueForKey:@"name"] isEqualToString:company]) {
@@ -107,11 +175,43 @@
         }
         i++;
     }
+    if (sqlite3_open([self.dbPathString UTF8String], &_database) == SQLITE_OK){
+        NSString *addToSQLTable = [NSString stringWithFormat:@"UPDATE Products SET Name = '%@' WHERE Name = '%@'", newName, oldName];
+        const char *sqlAdd = [addToSQLTable UTF8String];
+        if (sqlite3_exec(_database, sqlAdd, NULL, NULL, &error)==SQLITE_OK) {
+            NSLog(@"Product renamed");
+        }
+        sqlite3_close(_database);
+    }
     return self.companies;
 }
 
 -(NSMutableArray*) getCompanyData{
     return self.companies;
+}
+
+
+
+-(void) deleteCompany: (NSString*) name{
+    char *error;
+    NSString *deleteQuery = [NSString stringWithFormat:@"DELETE FROM Companies WHERE Name = '%@'", name];
+    if (sqlite3_open([self.dbPathString UTF8String], &_database) == SQLITE_OK){
+        const char *sqlDelete = [deleteQuery UTF8String];
+        if (sqlite3_exec(_database, sqlDelete, NULL, NULL, &error) == SQLITE_OK) {
+            NSLog(@"Company Deleted");
+        }
+    }
+}
+
+-(void) deleteProduct: (NSString*) name{
+    char *error;
+    NSString *deleteQuery = [NSString stringWithFormat:@"DELETE FROM Products WHERE Name = '%@'", name];
+    if (sqlite3_open([self.dbPathString UTF8String], &_database) == SQLITE_OK){
+        const char *sqlDelete = [deleteQuery UTF8String];
+        if (sqlite3_exec(_database, sqlDelete, NULL, NULL, &error) == SQLITE_OK) {
+            NSLog(@"Product Deleted");
+        }
+    }
 }
 
 @end

@@ -35,12 +35,13 @@
 */
 
 - (IBAction)finishNamingCompany:(id)sender {
-    [[DAO sharedManager]addCompany:_companyName.text];
+    [[DAO sharedManager]addCompany:_companyName.text stockSymbol: _stockSymbol.text];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)dealloc {
     [_companyName release];
+    [_stockSymbol release];
     [super dealloc];
 }
 @end

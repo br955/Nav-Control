@@ -41,7 +41,8 @@
 }
 - (IBAction)renameProduct:(id)sender {
     [[DAO sharedManager]editProduct:self.productName.text fromName:self.title forCompany:self.company];
+    [DAO release];
     [self.navigationController popViewControllerAnimated:YES];
-    
+    //[self dealloc];
 }
 @end

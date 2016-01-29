@@ -81,7 +81,7 @@
     }
     // Configure the cell...
     cell.textLabel.text = [[self.products objectAtIndex:[indexPath row]]valueForKey:@"name"];
-    cell.imageView.image = [UIImage imageNamed:[[self.products  objectAtIndex:[indexPath row]]valueForKey:@"icon"]];
+    cell.imageView.image = [UIImage imageNamed:@"defaulticon.jpeg"];
     
     return cell;
     
@@ -107,6 +107,7 @@
         [self.products removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         [tableView reloadData];
+        
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -151,6 +152,7 @@
 
 
     [self.navigationController pushViewController: self.page animated:YES];
+    
 
     // Pass the selected object to the new view controller.
 
@@ -162,6 +164,7 @@
     self.AddProduct = [[AddProduct alloc] initWithNibName:@"AddProduct" bundle:[NSBundle mainBundle]];
     self.AddProduct.companyName = self.title;
     [self.navigationController pushViewController:self.AddProduct animated:YES];
+    [self.AddProduct autorelease];
 }
 
 -(void)longPresser:(UILongPressGestureRecognizer*)gestureRecognizer
@@ -174,6 +177,7 @@
         self.EditProduct.title = [[self.products objectAtIndex:[touchedIndexPath row]] valueForKey:@"name"];
         self.EditProduct.company = self.title;
         [self.navigationController pushViewController:self.EditProduct animated:YES];
+        [self.EditProduct autorelease];
     }
 }
 

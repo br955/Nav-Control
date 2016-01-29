@@ -38,7 +38,8 @@
                     Company *company = [[Company alloc]init];
                     company.name = name;
                     company.stockSymbol = stockSymbol;
-                    [self.companies addObject:company];
+                    [self.companies addObject:[company autorelease]];
+                    [company release];
                 }
             }
             querySQL = [NSString stringWithFormat:@"SELECT * FROM Products"];
@@ -57,7 +58,7 @@
                     if (company.productList == nil) {
                         company.productList = [[NSMutableArray alloc]init];
                     }
-                    [company.productList addObject:product];
+                    [company.productList addObject:[product autorelease]];
                     x = [product.companyID intValue]-1;
                     self.companies[x] = company;
                 }
@@ -95,7 +96,6 @@
     Company *newCompany = [[Company alloc] init];
     newCompany.name = name;
     newCompany.stockSymbol = stockSymbol;
-    //sqlite3_stmt *statement;
     if (sqlite3_open([self.dbPathString UTF8String], &_database) == SQLITE_OK){
         NSString *addToSQLTable = [NSString stringWithFormat:@"INSERT INTO Companies(Name, stockSymbol) VALUES ('%@','%@')",newCompany.name, newCompany.stockSymbol];
         const char *sqlAdd = [addToSQLTable UTF8String];
@@ -105,7 +105,8 @@
         }
         sqlite3_close(_database);
     }
-    [self.companies addObject: newCompany];
+    [self.companies addObject: [newCompany autorelease]];
+    [newCompany release];
     return self.companies;
 }
 
@@ -132,6 +133,7 @@
         }
         sqlite3_close(_database);
     }
+    [newProduct release];
     return self.companies;
 }
 

@@ -37,8 +37,6 @@
 //    
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonPressed)];
     self.navigationItem.rightBarButtonItem = addButton;
-    
-//   [DAO sharedManager];
     self.title = @"Mobile device makers";
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPresser:)];
@@ -48,6 +46,7 @@
 
 -(void) viewWillAppear:(BOOL)animated{
     self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager] getCompanyData]];
+    //[DAO release];
     [self.tableView reloadData];
     
     self.stockPriceUrl = @"http://finance.yahoo.com/d/quotes.csv?s=";
@@ -105,11 +104,12 @@
             if (companyAndStockPrices.count == stockCompanies.count) {
                 self.priceByCompany = [[NSMutableDictionary alloc]initWithObjects:companyAndStockPrices forKeys:stockCompanies];
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    //[stockCompanies release];
+                    //[companyAndStockPrices release];
+                    //[self.priceByCompany autorelease];
                     [self.tableView reloadData];
                 });
             }
-            
-//
         }
         
     }];
@@ -149,7 +149,7 @@
     // Configure the cell...
     
     cell.textLabel.text = [[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"name" ];
-    cell.imageView.image = [UIImage imageNamed:[[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"companyIcon"]];
+    cell.imageView.image = [UIImage imageNamed:@"defaulticon.jpeg"];
     cell.detailTextLabel.text = [self.priceByCompany valueForKey:[[self.companyList objectAtIndex:[indexPath row]] valueForKey:@"name"]];
     
     return cell;
@@ -219,6 +219,7 @@
     
     self.AddCompany = [[AddCompany alloc] initWithNibName:@"AddCompany" bundle:[NSBundle mainBundle]];
     [self.navigationController pushViewController:self.AddCompany animated:YES];
+    [self.AddCompany release];
 }
 
 -(void)longPresser:(UILongPressGestureRecognizer*)gestureRecognizer
@@ -229,6 +230,7 @@
         self.EditCompany = [[EditCompany alloc]initWithNibName:@"EditCompany" bundle:[NSBundle mainBundle]];
         self.EditCompany.title = [[self.companyList objectAtIndex:[touchedIndexPath row]] valueForKey:@"name"];
         [self.navigationController pushViewController:self.EditCompany animated:YES];
+        [self.EditCompany release];
     }
 }
 

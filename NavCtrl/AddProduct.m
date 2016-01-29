@@ -42,6 +42,8 @@
 - (IBAction)finishNewProduct:(id)sender {
     NSString *name = self.productName.text;
     [[DAO sharedManager]addProduct:name forCompany:self.companyName];
+   // [DAO release];
     [self.navigationController popViewControllerAnimated:YES];
+    //[self dealloc];
 }
 @end

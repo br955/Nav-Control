@@ -41,6 +41,8 @@
 }
 - (IBAction)finishEditing:(id)sender {
     [[DAO sharedManager]editCompany:_editText.text fromName:self.title];
+    //[DAO release];
     [self.navigationController popViewControllerAnimated:YES];
+    //[self dealloc];
 }
 @end

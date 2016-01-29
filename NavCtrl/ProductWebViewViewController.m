@@ -20,9 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-//    NSURL *url = [NSURL URLWithString:self.URLName];
-//    NSMutableURLRequest *requestObj = [NSMutableURLRequest requestWithURL:url];
-//    [productPage loadRequest:requestObj];
+
     
     WKWebViewConfiguration *theConfiguration = [[WKWebViewConfiguration alloc] init];
     WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.frame configuration:theConfiguration];
@@ -33,12 +31,17 @@
     
     [webView loadRequest:nsrequest];
     [self.view addSubview:webView];
+    [webView release];
 
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)dealloc{
+    [super dealloc];
 }
 
 /*

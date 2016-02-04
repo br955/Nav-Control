@@ -9,17 +9,26 @@
 #import <Foundation/Foundation.h>
 #import "Company.h"
 #import "Product.h"
-#import "sqlite3.h"
+#import "CompanyMO.h"
+#import "ProductMO.h"
+#import <CoreData/CoreData.h>
+
 
 @interface DAO : NSObject
 
 @property (readwrite, nonatomic, retain) NSMutableArray *companies;
-@property sqlite3 *database;
-@property (nonatomic, retain) NSString *dbPathString;
+@property (nonatomic, retain) NSMutableArray *products;
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property(nonatomic, retain) NSManagedObjectModel *model;
+
+-(void) initModelContext;
+
+-(NSURL*) archivePath;
 
 +(id) sharedManager;
 
 -(id) init;
+
 
 -(NSMutableArray*) addCompany: (NSString*) name stockSymbol: (NSString*)stockSymbol;
 
@@ -34,6 +43,8 @@
 -(void) deleteCompany: (NSString*) name;
 
 -(void) deleteProduct: (NSString*) name;
+
+
 
 
 @end

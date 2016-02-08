@@ -59,6 +59,9 @@
         
         NSManagedObjectContext *context = self.managedObjectContext;
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CompanyMO"]; // add companies already in core data
+        NSSortDescriptor *descriptor = [NSSortDescriptor sortDescriptorWithKey:@"companyID" ascending:YES];
+        NSArray *descriptors = [NSArray arrayWithObject:descriptor];
+        [request setSortDescriptors:descriptors];
         NSArray *results = [context executeFetchRequest:request error:&error];
         int i = 0;
         while (i< results.count) {

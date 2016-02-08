@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "DAO.h"
-#import "CompanyViewController.h"
 #import "ProductWebViewViewController.h"
 
 @interface AddCompany : UIViewController

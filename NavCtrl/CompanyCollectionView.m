@@ -62,59 +62,53 @@ static NSString * const reuseIdentifier = @"CollectionCell";
     
     self.stockPriceUrl = [self.stockPriceUrl stringByAppendingString:@"&f=a"];
     
-    NSURL *stockDataURL = [NSURL URLWithString:self.stockPriceUrl];
+    AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
+    sessionManager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    sessionManager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    NSURLSessionDataTask *dataTask = [session dataTaskWithURL:stockDataURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [sessionManager GET:self.stockPriceUrl parameters:nil progress:nil success:^(NSURLSessionTask *task,
+                                                                                 id responseObject) {
+
+        NSString *dataString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         
-        //Convert csv to string
-        NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSArray *temp =[dataString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
         
-        if (data == nil) {
-            NSLog(@"Error storing --- data is nil");
-            NSLog(@"Domain: %@", error.domain);
-            NSLog(@"Error Code: %ld", (long)error.code);
-            NSLog(@"Description: %@", [error localizedDescription]);
-            NSLog(@"Reason: %@", [error localizedFailureReason]);
-            NSLog(@"Company  Updated");
-            [dataString release]; dataString = nil;
-            
-        }else {
-            int i = 0;
-            NSArray *temp = [dataString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-            NSMutableArray *companyAndStockPrices = [NSMutableArray arrayWithArray:temp];
-            while (i<companyAndStockPrices.count) {
-                if ([companyAndStockPrices[i] isEqualToString: @""]) {
-                    [companyAndStockPrices removeObjectAtIndex:i];
-                }
-                i++;
+        NSMutableArray *companyAndStockPrices = [NSMutableArray arrayWithArray:temp];
+        [dataString release]; dataString = nil;
+        int i = 0;
+        while (i<companyAndStockPrices.count) {
+            if ([companyAndStockPrices[i] isEqualToString: @""]) {
+                [companyAndStockPrices removeObjectAtIndex:i];
             }
-            [dataString release]; dataString = nil;
-            
-            NSMutableArray *stockCompanies = [NSMutableArray arrayWithCapacity:10];
-            
-            i = 0;
-            while (i < self.companyList.count) {
-                [stockCompanies addObject:[[self.companyList valueForKey:@"name"] objectAtIndex:i]];
-                if ([[[self.companyList objectAtIndex:i]valueForKey:@"stockSymbol"] isEqualToString:@""]) {
-                    [stockCompanies removeObject:[[self.companyList objectAtIndex:i]valueForKey:@"name"]];
-                }
-                i++;
-            }
-            
-            if (companyAndStockPrices.count == stockCompanies.count) {
-                self.priceByCompany = [[NSMutableDictionary alloc]initWithObjects:companyAndStockPrices forKeys:stockCompanies];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.collectionView reloadData];
-                });
-            }
+            i++;
         }
+        NSMutableArray *stockCompanies = [NSMutableArray arrayWithCapacity:10];
         
+        i = 0;
+        while (i < self.companyList.count) {
+            [stockCompanies addObject:[[self.companyList valueForKey:@"name"] objectAtIndex:i]];
+            if ([[[self.companyList objectAtIndex:i]valueForKey:@"stockSymbol"] isEqualToString:@""]) {
+                [stockCompanies removeObject:[[self.companyList objectAtIndex:i]valueForKey:@"name"]];
+            }
+            i++;
+        }
+        if (companyAndStockPrices.count == stockCompanies.count) {
+            self.priceByCompany = [[NSMutableDictionary alloc]initWithObjects:companyAndStockPrices forKeys:stockCompanies];
+        }
+        [self.collectionView reloadData];
+        
+    }failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        NSLog(@"Domain: %@", error.domain);
+        NSLog(@"Error Code: %ld", (long)error.code);
+        NSLog(@"Description: %@", [error localizedDescription]);
+        NSLog(@"Reason: %@", [error localizedFailureReason]);
     }];
-    [dataTask resume];
     
 }
+    
+    
+    
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

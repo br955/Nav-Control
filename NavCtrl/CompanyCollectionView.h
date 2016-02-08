@@ -13,6 +13,7 @@
 #import "EditCompany.h"
 #import "CollectionCell.h"
 #import "ProductCollectionView.h"
+#import "AFNetworking.h"
 
 @class ProductCollectionView;
 @class AddCompany;

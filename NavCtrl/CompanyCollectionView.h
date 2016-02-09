@@ -30,4 +30,6 @@
 @property (nonatomic, retain) AddCompany *AddCompany;
 @property (nonatomic, retain) EditCompany *EditCompany;
 
+-(void) setStockPrices;
+
 @end

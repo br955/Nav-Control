@@ -50,60 +50,9 @@ static NSString * const reuseIdentifier = @"CollectionCell";
     self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager] getCompanyData]];
     
     [self.collectionView reloadData];
-    
-    self.stockPriceUrl = @"http://finance.yahoo.com/d/quotes.csv?s=";
-    for (int i = 0; i<self.companyList.count; i++) {
-        if ([self.companyList[i] valueForKey:@"stockSymbol"]!=nil) {
-            self.stockPriceUrl = [self.stockPriceUrl stringByAppendingString:[self.companyList[i] valueForKey:@"stockSymbol"]];
-            self.stockPriceUrl = [self.stockPriceUrl stringByAppendingString:@"+"];
-        }
-    }
-    
-    
-    self.stockPriceUrl = [self.stockPriceUrl stringByAppendingString:@"&f=a"];
-    
-    AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
-    sessionManager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    sessionManager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    [sessionManager GET:self.stockPriceUrl parameters:nil progress:nil success:^(NSURLSessionTask *task,
-                                                                                 id responseObject) {
-
-        NSString *dataString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        
-        NSArray *temp =[dataString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-        
-        NSMutableArray *companyAndStockPrices = [NSMutableArray arrayWithArray:temp];
-        [dataString release]; dataString = nil;
-        int i = 0;
-        while (i<companyAndStockPrices.count) {
-            if ([companyAndStockPrices[i] isEqualToString: @""]) {
-                [companyAndStockPrices removeObjectAtIndex:i];
-            }
-            i++;
-        }
-        NSMutableArray *stockCompanies = [NSMutableArray arrayWithCapacity:10];
-        
-        i = 0;
-        while (i < self.companyList.count) {
-            [stockCompanies addObject:[[self.companyList valueForKey:@"name"] objectAtIndex:i]];
-            if ([[[self.companyList objectAtIndex:i]valueForKey:@"stockSymbol"] isEqualToString:@""]) {
-                [stockCompanies removeObject:[[self.companyList objectAtIndex:i]valueForKey:@"name"]];
-            }
-            i++;
-        }
-        if (companyAndStockPrices.count == stockCompanies.count) {
-            self.priceByCompany = [[NSMutableDictionary alloc]initWithObjects:companyAndStockPrices forKeys:stockCompanies];
-        }
-        [self.collectionView reloadData];
-        
-    }failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        NSLog(@"Domain: %@", error.domain);
-        NSLog(@"Error Code: %ld", (long)error.code);
-        NSLog(@"Description: %@", [error localizedDescription]);
-        NSLog(@"Reason: %@", [error localizedFailureReason]);
-    }];
+    [self setStockPrices];
+    NSTimer* myTimer = [NSTimer scheduledTimerWithTimeInterval: 60.0 target: self
+                                                      selector: @selector(setStockPrices) userInfo: nil repeats: YES];
     
 }
     
@@ -202,13 +151,71 @@ static NSString * const reuseIdentifier = @"CollectionCell";
     
     self.productCollectionView.title = [[self.companyList objectAtIndex:[indexPath row]] name];
     self.productCollectionView.products = [[self.companyList objectAtIndex:[indexPath row]] productList];
-    
+    self.productCollectionView.companyID = [[self.companyList objectAtIndex:[indexPath row
+                                                                             ]]ID];
     [self.navigationController
      pushViewController:self.productCollectionView
      animated:YES];
 
 }
 
+-(void) setStockPrices{
+    NSLog(@"updating stock prices");
+    self.stockPriceUrl = @"http://finance.yahoo.com/d/quotes.csv?s=";
+    for (int i = 0; i<self.companyList.count; i++) {
+        if ([self.companyList[i] valueForKey:@"stockSymbol"]!=nil) {
+            self.stockPriceUrl = [self.stockPriceUrl stringByAppendingString:[self.companyList[i] valueForKey:@"stockSymbol"]];
+            self.stockPriceUrl = [self.stockPriceUrl stringByAppendingString:@"+"];
+        }
+    }
+    
+    
+    self.stockPriceUrl = [self.stockPriceUrl stringByAppendingString:@"&f=a"];
+    
+    AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
+    sessionManager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    sessionManager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    [sessionManager GET:self.stockPriceUrl parameters:nil progress:nil success:^(NSURLSessionTask *task,
+                                                                                 id responseObject) {
+        
+        NSString *dataString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        
+        NSArray *temp =[dataString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        
+        NSMutableArray *companyAndStockPrices = [NSMutableArray arrayWithArray:temp];
+        [dataString release]; dataString = nil;
+        int i = 0;
+        while (i<companyAndStockPrices.count) {
+            if ([companyAndStockPrices[i] isEqualToString: @""]) {
+                [companyAndStockPrices removeObjectAtIndex:i];
+            }
+            i++;
+        }
+        NSMutableArray *stockCompanies = [NSMutableArray arrayWithCapacity:10];
+        
+        i = 0;
+        while (i < self.companyList.count) {
+            [stockCompanies addObject:[[self.companyList valueForKey:@"name"] objectAtIndex:i]];
+            if ([[[self.companyList objectAtIndex:i]valueForKey:@"stockSymbol"] isEqualToString:@""]) {
+                [stockCompanies removeObject:[[self.companyList objectAtIndex:i]valueForKey:@"name"]];
+            }
+            i++;
+        }
+        if (companyAndStockPrices.count == stockCompanies.count) {
+            self.priceByCompany = [[NSMutableDictionary alloc]initWithObjects:companyAndStockPrices forKeys:stockCompanies];
+        }
+        [self.collectionView reloadData];
+        
+    }failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        NSLog(@"Domain: %@", error.domain);
+        NSLog(@"Error Code: %ld", (long)error.code);
+        NSLog(@"Description: %@", [error localizedDescription]);
+        NSLog(@"Reason: %@", [error localizedFailureReason]);
+    }];
+    
+}
 /*
  // Uncomment this method to specify if the specified item should be highlighted during tracking
  - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {

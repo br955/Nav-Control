@@ -30,8 +30,6 @@ static NSString * const reuseIdentifier = @"ProductCell";
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonPressed)];
     self.navigationItem.rightBarButtonItem = addButton;
     
-    self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
-    
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPresser:)];
     [self.view addGestureRecognizer:longPress];
     [longPress release];
@@ -43,9 +41,9 @@ static NSString * const reuseIdentifier = @"ProductCell";
 
 }
 - (void)viewWillAppear:(BOOL)animated {
-    
     [super viewWillAppear:animated];
-    
+    self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
+    self.products = [[self.companyList objectAtIndex:([self.companyID integerValue]-1)] productList];
     [self.collectionView reloadData];
 }
 
@@ -90,6 +88,7 @@ static NSString * const reuseIdentifier = @"ProductCell";
     self.AddProduct.companyName = self.title;
     [self.navigationController pushViewController:self.AddProduct animated:YES];
     [self.AddProduct autorelease];
+    
 }
 
 -(void)longPresser:(UILongPressGestureRecognizer*)gestureRecognizer

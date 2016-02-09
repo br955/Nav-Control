@@ -29,6 +29,9 @@
 
 -(id) init;
 
+-(void) loadData;
+
+-(void) loadDefaultData;
 
 -(NSMutableArray*) addCompany: (NSString*) name stockSymbol: (NSString*)stockSymbol;
 

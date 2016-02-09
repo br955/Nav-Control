@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSMutableArray *products;
 @property (nonatomic, retain) NSArray *companyList;
 @property (nonatomic, retain) NSString *title;
+@property (nonatomic, retain) NSNumber *companyID;
 
 @property (nonatomic, retain) ProductWebViewViewController *page;
 @property (nonatomic, retain) AddProduct *AddProduct;

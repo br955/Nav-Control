@@ -45,7 +45,7 @@
 
 -(void) deleteCompany: (NSString*) name;
 
--(void) deleteProduct: (NSString*) name;
+-(void) deleteProduct: (NSString*) name fromCompany: (NSString*) company;
 
 
 

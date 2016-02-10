@@ -43,7 +43,7 @@ static NSString * const reuseIdentifier = @"ProductCell";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.companyList = [NSMutableArray arrayWithArray:[[DAO sharedManager]getCompanyData]];
-    self.products = [[self.companyList objectAtIndex:([self.companyID integerValue]-1)] productList];
+    self.products = [[self.companyList objectAtIndex:[self.companyID integerValue]] productList]; //tells us where correct productlist is on the array without bothering with the "ID" company property 
     [self.collectionView reloadData];
 }
 
@@ -115,11 +115,10 @@ static NSString * const reuseIdentifier = @"ProductCell";
         UIAlertAction *actionDelete = [UIAlertAction actionWithTitle:@"Delete Product"
                                                                style:UIAlertActionStyleDefault
                                                              handler:^(UIAlertAction * action) {
-                                                                 [[DAO sharedManager] deleteProduct: tempProduct.name];
-                                                                 [self.products removeObjectAtIndex:
-                                                                  touchedIndexPath.row];
+                                                                 [[DAO sharedManager] deleteProduct: tempProduct.name fromCompany: self.title];
+                                                                 [self.products removeObject:tempProduct];
                                                                  [self.collectionView reloadData];
-                                                                 
+                                                                 [tempProduct autorelease];
                                                              }];
         UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"Cancel"
                                                                style:UIAlertActionStyleDefault

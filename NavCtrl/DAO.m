@@ -58,6 +58,12 @@
 -(void) loadData{
     NSError *error;
     if(self){
+        
+        if(self.companies){
+            [self.companies removeAllObjects];
+            [self.companies release];
+        }
+        
         self.companies = [[NSMutableArray alloc]init];
         self.products = [[NSMutableArray alloc]init];
         [self initModelContext];
@@ -67,6 +73,16 @@
         NSArray *descriptors = [NSArray arrayWithObject:descriptor];
         [request setSortDescriptors:descriptors];
         NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+       
+        if(results.count == 0){  // hard code companies & products if no data is available
+            [self loadDefaultData];
+            NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CompanyMO"]; // add companies already in core data
+            NSSortDescriptor *descriptor = [NSSortDescriptor sortDescriptorWithKey:@"companyID" ascending:YES];
+            NSArray *descriptors = [NSArray arrayWithObject:descriptor];
+            [request setSortDescriptors:descriptors];
+            results = [self.managedObjectContext executeFetchRequest:request error:&error];
+        }
+        
         int i = 0;
         while (i< results.count) {
             CompanyMO *tempCOMO = results[i];
@@ -94,10 +110,6 @@
             i++;
         }
         
-        if(self.companies.count == 0){  // hard code companies & products if no data is available
-            [self loadDefaultData];
-        }
-        
             i = 0;
         while (i<self.products.count) {
             Product *tempPro = self.products[i];
@@ -111,8 +123,10 @@
             i++;
         }
     }
-    
+    [self.products removeAllObjects];
+    [self.products release];
 }
+
 
 -(void) loadDefaultData{
     NSError *error;
@@ -136,19 +150,7 @@
     [pantech setValue:@"Pantech" forKey:@"name"];
     [pantech setValue:@"5125.KL" forKey:@"stockSymbol"];
     
-    NSArray *MOCompanies = [NSArray arrayWithObjects:apple, samsung, lg, pantech, nil];
-    int i=0;
-    while (i< MOCompanies.count) {    // add hard coded companies to company property
-        CompanyMO *tempCOMO = MOCompanies[i];
-        Company *tempCO = [[Company alloc]init];
-        tempCO.ID = tempCOMO.companyID;
-        tempCO.name = tempCOMO.name;
-        tempCO.stockSymbol = tempCOMO.stockSymbol;
-        [self.companies addObject:tempCO];
-        [tempCO release];
-        [tempCOMO release];
-        i++;
-    }
+///////////
     
     ProductMO *iPad = [NSEntityDescription insertNewObjectForEntityForName:@"ProductMO" inManagedObjectContext:self.managedObjectContext];
     [iPad setValue:@1 forKey:@"companyID"];
@@ -212,19 +214,6 @@
     [Hotshot setValue:@"Hotshot" forKey:@"name"];
     [Hotshot setValue:@"http://www.gsmarena.com/pantech_breakout-4294.php" forKey:@"siteURL"];
     
-    NSArray *MOProducts = [NSArray arrayWithObjects:iPad, iPhone, iPod, S4, Note, Tab, G4, gWatch, gFlex, Breakout, Ease, Hotshot, nil];
-    i = 0;
-    while (i< MOProducts.count) {       // add hard coded products to product property (only used to populate company product lists
-        ProductMO *tempPROMO =MOProducts[i];
-        Product *tempPRO = [[Product alloc]init];
-        tempPRO.companyID = tempPROMO.companyID;
-        tempPRO.name = tempPROMO.name;
-        tempPRO.siteURL = tempPROMO.siteURL;
-        [self.products addObject:tempPRO];
-        [tempPROMO autorelease];
-        [tempPRO autorelease];
-        i++;
-    }
     [self.managedObjectContext save:&error];
 }
 
@@ -254,7 +243,7 @@
     int i = 0;
     while(i<self.companies.count){
         if([[[self.companies objectAtIndex:i] valueForKey:@"name"] isEqualToString:company]){
-            newProduct.companyID = [NSNumber numberWithInt: i+1];
+            newProduct.companyID = [[self.companies objectAtIndex:i] ID];
             Company *temp = [self.companies objectAtIndex:i];
             if (temp.productList == nil){
                 temp.productList = [[NSMutableArray alloc]init];
@@ -335,7 +324,6 @@
 }
 
 -(NSMutableArray*) getCompanyData{
-    [self loadData];
     return self.companies;
 }
 
@@ -351,9 +339,18 @@
     NSError *error = nil;
     [self.managedObjectContext deleteObject:[[self.managedObjectContext executeFetchRequest:fetchRequest error:&error] objectAtIndex:0]];
     [self.managedObjectContext save:&error];
+    int i = 0;
+    while (i<self.companies.count) {
+        if ([name isEqualToString:[[self.companies objectAtIndex:i] name]]) {
+            [[[self.companies objectAtIndex:i] productList] removeAllObjects];
+            [self.companies removeObjectAtIndex:i];
+            break;
+        }
+        i++;
     }
+}
 
--(void) deleteProduct: (NSString*) name{
+-(void) deleteProduct: (NSString*) name fromCompany: (NSString*) company{
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"ProductMO" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
@@ -363,7 +360,22 @@
     NSError *error = nil;
     [self.managedObjectContext deleteObject:[[self.managedObjectContext executeFetchRequest:fetchRequest error:&error] objectAtIndex:0]];
     [self.managedObjectContext save:&error];
-   }
+    int i = 0;
+    while (i<self.companies.count) {
+        if ([[[self.companies objectAtIndex:i] valueForKey:@"name"] isEqualToString:company]) {
+            int z = 0;
+            Company *tempCompany = self.companies[i];
+            while (z<tempCompany.productList.count) {
+                if ([[[tempCompany.productList objectAtIndex:z] valueForKey:@"name"] isEqualToString:name]) {
+                    [tempCompany.productList removeObjectAtIndex:z];
+                    break;
+                }
+                z++;
+            }
+        }
+        i++;
+    }
+}
 
 @end
 

@@ -51,9 +51,9 @@ static NSString * const reuseIdentifier = @"CollectionCell";
     
     [self.collectionView reloadData];
     [self setStockPrices];
-    NSTimer* myTimer = [NSTimer scheduledTimerWithTimeInterval: 60.0 target: self
-                                                      selector: @selector(setStockPrices) userInfo: nil repeats: YES];
-    
+//    NSTimer* myTimer = [NSTimer scheduledTimerWithTimeInterval: 60.0 target: self
+//                                                      selector: @selector(setStockPrices) userInfo: nil repeats: YES];
+//    
 }
     
     
@@ -126,6 +126,11 @@ static NSString * const reuseIdentifier = @"CollectionCell";
         UIAlertAction *actionDelete = [UIAlertAction actionWithTitle:@"Delete Company"
                                                                style:UIAlertActionStyleDefault
                                                              handler:^(UIAlertAction * action) {
+                                                                 long i = [tempCompany.productList count]-1;
+                                                                 while (i>=0) {
+                                                                     [[DAO sharedManager] deleteProduct: [tempCompany.productList[i] name] fromCompany:tempCompany.name];
+                                                                     i--;
+                                                                 }
                                                                  [[DAO sharedManager] deleteCompany: tempCompany.name];
                                                                  [self.companyList removeObjectAtIndex:
                                                                   touchedIndexPath.row];
@@ -150,9 +155,7 @@ static NSString * const reuseIdentifier = @"CollectionCell";
     [viewController release]; viewController = nil;
     
     self.productCollectionView.title = [[self.companyList objectAtIndex:[indexPath row]] name];
-    self.productCollectionView.products = [[self.companyList objectAtIndex:[indexPath row]] productList];
-    self.productCollectionView.companyID = [[self.companyList objectAtIndex:[indexPath row
-                                                                             ]]ID];
+    self.productCollectionView.companyID = [NSNumber numberWithLong:[indexPath row]]; // more like array ID
     [self.navigationController
      pushViewController:self.productCollectionView
      animated:YES];
